@@ -1,0 +1,6 @@
+[deps]
+BioIdentifiers = "22183900-f399-4fcd-a053-d40765e38b1f"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+
+[sources]
+BioIdentifiers = {path = ".."}

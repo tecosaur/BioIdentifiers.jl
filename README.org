@@ -1,0 +1,116 @@
+#+title: BioIdentifiers.jl
+#+author: tecosaur
+
+#+html: <a href="https://tecosaur.net"><img src="https://img.shields.io/badge/%F0%9F%A6%95-tec-27a560.svg"></a>
+#+html: <a href="https://tecosaur.github.io/BioIdentifiers.jl/stable/"><img src="https://img.shields.io/badge/docs-stable-blue.svg"></a>
+#+html: <a href="https://tecosaur.github.io/BioIdentifiers.jl/dev/"><img src="https://img.shields.io/badge/docs-dev-blue.svg"></a>
+#+html: <a href="https://coveralls.io/github/tecosaur/BioIdentifiers.jl"><img src="https://coveralls.io/repos/github/tecosaur/BioIdentifiers.jl/badge.svg"></a>
+#+html: <a href="https://www.tldrlegal.com/license/mozilla-public-license-2-0-mpl-2"><img src="https://img.shields.io/badge/license-MPL%202.0-teal.svg"></a>
+#+html: <a href="https://liberapay.com/tec"><img src="https://shields.io/badge/support%20my%20efforts-f6c915?logo=Liberapay&logoColor=black"></a>
+
+Structured and validated types for biological and biomedical identifiers. See
+[[https://code.tecosaur.net/tec/FastIdentifiers.jl][FastIdentifiers.jl]] for the motivation of identifier-types packages, and the
+identifier API.
+
+* Implemented identifiers
+
+** Protein & Structure
+
++ ~AFDB~: AlphaFold Database protein structure predictions
++ ~PDB~: Protein Data Bank macromolecular structures
++ ~UniProt~: Universal Protein Resource sequences
++ ~UniRef~: UniProt Reference Clusters
++ ~IntAct~: Molecular interaction database
++ ~InterPro~: Protein family/domain classification
++ ~Pfam~: Protein family HMM profiles
++ ~PXD~: ProteomeXchange dataset identifiers
+
+** Genomics & Genetics
+
++ ~ENSG~, ~ENST~, ~ENSP~, ~ENSE~, ~ENSR~, ~ENSF~, ~ENSFM~: Ensembl genome annotations
++ ~NCBIGene~: NCBI Entrez Gene database
++ ~RefSeq~: NCBI Reference Sequence database
++ ~HGNC~: HUGO Gene Nomenclature Committee
++ ~INSDC~: International Nucleotide Sequence Database Collaboration
++ ~OMIM~: Online Mendelian Inheritance in Man
+
+** Variation & Clinical
+
++ ~CA~: ClinGen Allele Registry
++ ~ClinVar~: Clinical genomic variant database
++ ~dbSNP~: Single Nucleotide Polymorphism database
++ ~dbVar~: Genomic structural variation database
++ ~GWAS~: NHGRI-EBI GWAS Catalog studies
+
+** Expression & Functional Genomics
+
++ ~ArrayExpress~: Functional genomics data archive
++ ~GEO~: Gene Expression Omnibus
+
+** Studies & Samples
+
++ ~BioProject~: Biological research projects
++ ~BioSample~: Biological sample metadata
++ ~ClinicalTrials~: ClinicalTrials.gov registry
++ ~dbGaP~: Database of Genotypes and Phenotypes
++ ~EGA~: European Genome-phenome Archive
++ ~RRID~: Research Resource Identifiers
++ ~SRA~: Sequence Read Archive
+
+** Ontologies & Controlled Vocabularies
+
++ ~CL~: Cell Ontology
++ ~DOID~: Disease Ontology
++ ~ECO~: Evidence & Conclusion Ontology
++ ~EFO~: Experimental Factor Ontology
++ ~GO~: Gene Ontology
++ ~HPO~: Human Phenotype Ontology
++ ~MeSH~: Medical Subject Headings
++ ~MONDO~: Monarch Disease Ontology
++ ~MP~: Mammalian Phenotype Ontology
++ ~PATO~: Phenotype And Trait Ontology
++ ~SO~: Sequence Ontology
++ ~UBERON~: Uber-anatomy Ontology
+
+** Chemical & Metabolic
+
++ ~ChEBI~: Chemical Entities of Biological Interest
++ ~ChEMBL~: Bioactive compound database
++ ~DrugBank~: Drug and pharmaceutical database
++ ~HMDB~: Human Metabolome Database
++ ~KEGG~: Kyoto Encyclopedia of Genes and Genomes
++ ~MetaboLights~: Metabolomics study archive
++ ~PubChem~: Chemical compound/substance/assay database
+
+** Networks & Interactions
+
++ ~BioGRID~: Biological interaction datasets
++ ~Reactome~: Curated biological pathways
++ ~WikiPathways~: Community pathway database
+
+** Cell Lines & Model Organisms
+
++ ~Cellosaurus~: Cell line registry
++ ~FlyBase~: Drosophila gene database
++ ~MGI~: Mouse Genome Informatics
++ ~NCBITaxon~: NCBI Taxonomy database
++ ~SGD~: Saccharomyces Genome Database
++ ~WormBase~: Caenorhabditis gene database
+
+* Example usage
+
+#+begin_src julia-repl
+julia> using BioIdentifiers
+
+julia> parse(UniProt, "P04637")
+UniProt:P04637
+
+julia> purl(parse(UniProt, "P04637"))
+"https://www.uniprot.org/uniprot/P04637"
+
+julia> parse(GO, "GO:0006915")
+GO:0006915
+
+julia> string(parse(GO, "GO:0006915"))
+"GO:0006915"
+#+end_src
