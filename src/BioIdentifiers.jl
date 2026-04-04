@@ -7,139 +7,138 @@
 Structured and validated types for biological and biomedical identifiers.
 
 This module provides type-safe representations of identifiers commonly used in
-biological and biomedical databases, extending the DigitalIdentifiersBase framework.
-Each identifier type validates input format, provides canonical string representations,
-and includes persistent URLs where applicable.
+biological and biomedical databases, extending the FastIdentifiers framework.
+Each identifier type validates input format, provides canonical string
+representations, and includes persistent URLs where applicable.
 
 # Supported Identifiers
 
 **Protein & Structure**
-- `AFDB`: AlphaFold Database protein structure predictions
-- `UniProt`: Universal Protein Resource database
-- `IntAct`: Molecular interaction database
+- [`AFDB`](@ref): AlphaFold Database protein structure predictions
+- [`PDB`](@ref): Protein Data Bank macromolecular structures
+- [`UniProt`](@ref): Universal Protein Resource sequences
+- [`UniRef`](@ref): UniProt Reference Clusters
+- [`IntAct`](@ref): Molecular interaction database
+- [`InterPro`](@ref): Protein family/domain classification
+- [`Pfam`](@ref): Protein family HMM profiles
+- [`PXD`](@ref): ProteomeXchange dataset identifiers
 
 **Genomics & Genetics**
-- Ensembl (`ENSG`, `ENST`, `ENSP`, `ENSE`, `ENSR`, `ENSF`, `ENSFM`), Ensembl genome annotations
-- `NCBIGene`: NCBI Gene database
-- `RefSeq`: NCBI Reference Sequence database
-- `HGNC`: HUGO Gene Nomenclature Committee
-- `OMIM`: Online Mendelian Inheritance in Man
+- [`ENSG`](@ref EnsemblIdentifier), [`ENST`](@ref EnsemblIdentifier), [`ENSP`](@ref EnsemblIdentifier), [`ENSE`](@ref EnsemblIdentifier), [`ENSR`](@ref EnsemblIdentifier), [`ENSF`](@ref EnsemblIdentifier), [`ENSFM`](@ref EnsemblIdentifier): Ensembl genome annotations
+- [`NCBIGene`](@ref): NCBI Entrez Gene database
+- [`RefSeq`](@ref): NCBI Reference Sequence database
+- [`HGNC`](@ref): HUGO Gene Nomenclature Committee
+- [`INSDC`](@ref): International Nucleotide Sequence Database Collaboration
+- [`OMIM`](@ref): Online Mendelian Inheritance in Man
 
 **Variation & Clinical**
-- `ClinVar`: Clinical genomic variant database
-- `dbSNP`: Single Nucleotide Polymorphism database
-- `dbVar`: Genomic structural variation database
+- [`CA`](@ref): ClinGen Allele Registry
+- [`ClinVar`](@ref): Clinical genomic variant database
+- [`dbSNP`](@ref): Single Nucleotide Polymorphism database
+- [`dbVar`](@ref): Genomic structural variation database
+- [`GWAS`](@ref): NHGRI-EBI GWAS Catalog studies
 
 **Expression & Functional Genomics**
-- `ArrayExpress`: Functional genomics data archive
-- `GEO`: Gene Expression Omnibus
+- [`ArrayExpress`](@ref): Functional genomics data archive
+- [`GEO`](@ref): Gene Expression Omnibus
 
 **Studies & Samples**
-- `BioProject`: Biological research projects
-- `BioSample`: Biological sample metadata
-- `SRA`: Sequence Read Archive
-- `EGA`: European Genome-phenome Archive
-- `dbGaP`: Database of Genotypes and Phenotypes
-- `ClinicalTrials`: Clinical trial registry
+- [`BioProject`](@ref): Biological research projects
+- [`BioSample`](@ref): Biological sample metadata
+- [`ClinicalTrials`](@ref): ClinicalTrials.gov registry
+- [`dbGaP`](@ref): Database of Genotypes and Phenotypes
+- [`EGA`](@ref): European Genome-phenome Archive
+- [`RRID`](@ref): Research Resource Identifiers
+- [`SRA`](@ref): Sequence Read Archive
 
 **Ontologies & Controlled Vocabularies**
-- `GO`: Gene Ontology
-- `HPO`: Human Phenotype Ontology
-- `MONDO`: Monarch Disease Ontology
-- `DOID`: Disease Ontology
-- `CL`: Cell Ontology
-- `EFO`: Experimental Factor Ontology
+- [`CL`](@ref): Cell Ontology
+- [`DOID`](@ref): Disease Ontology
+- [`ECO`](@ref): Evidence & Conclusion Ontology
+- [`EFO`](@ref): Experimental Factor Ontology
+- [`GO`](@ref): Gene Ontology
+- [`HPO`](@ref): Human Phenotype Ontology
+- [`MeSH`](@ref): Medical Subject Headings
+- [`MONDO`](@ref): Monarch Disease Ontology
+- [`MP`](@ref): Mammalian Phenotype Ontology
+- [`PATO`](@ref): Phenotype And Trait Ontology
+- [`SO`](@ref): Sequence Ontology
+- [`UBERON`](@ref): Uber-anatomy Ontology
 
 **Chemical & Metabolic**
-- `ChEBI`: Chemical Entities of Biological Interest
-- `HMDB`: Human Metabolome Database
-- `KEGG`: Kyoto Encyclopedia of Genes and Genomes
-- `MetaboLights`: Metabolomics data repository
+- [`ChEBI`](@ref): Chemical Entities of Biological Interest
+- [`ChEMBL`](@ref): Bioactive compound database
+- [`DrugBank`](@ref): Drug and pharmaceutical database
+- [`HMDB`](@ref): Human Metabolome Database
+- [`KEGG`](@ref): Kyoto Encyclopedia of Genes and Genomes
+- [`MetaboLights`](@ref): Metabolomics study archive
+- [`PubChem`](@ref): Chemical compound/substance/assay database
 
 **Networks & Interactions**
-- `BioGRID`: Biological General Repository for Interaction Datasets
-- `Reactome`: Pathway database
+- [`BioGRID`](@ref): Biological interaction datasets
+- [`Reactome`](@ref): Curated biological pathways
+- [`WikiPathways`](@ref): Community pathway database
 
 **Cell Lines & Model Organisms**
-- `Cellosaurus`: Cell line database
-- `NCBITaxon`: NCBI Taxonomy database
-
-**Proteomics**
-- `PXD`: ProteomeXchange dataset identifiers
-
-**Resources & Reagents**
-- `RRID`: Research Resource Identifiers
-
-**Alleles & Variants**
-- `CA`: ClinGen Allele Registry
-- `VIAF`: Virtual International Authority File (when used for biological entities)
-
-Each identifier can be constructed from its canonical string form and provides
-methods for validation, canonical output, and URL generation where applicable.
+- [`Cellosaurus`](@ref): Cell line registry
+- [`FlyBase`](@ref): Drosophila gene database
+- [`MGI`](@ref): Mouse Genome Informatics
+- [`NCBITaxon`](@ref): NCBI Taxonomy database
+- [`SGD`](@ref): Saccharomyces Genome Database
+- [`WormBase`](@ref): Caenorhabditis gene database
 """
 module BioIdentifiers
 
-import DigitalIdentifiersBase: AcademicIdentifier, MalformedIdentifier, parseid, parsefor, chopprefixes, shortcode, purl, idcode, purlprefix
+using FastIdentifiers
+import FastIdentifiers: purlprefix, shortcode
+using FastIdentifiers: @defid
 
-export BioIdentifier, AFDB, ArrayExpress, BioGRID, BioProject, BioSample, CA, CAS, CL, Cellosaurus, ChEBI, ChEMBL, ClinVar, ClinicalTrials, dbGaP, dbSNP, dbVar, DOID, DrugBank, ECO, EFO, EGA, ENSG, ENST, ENSP, ENSE, ENSR, ENSF, ENSFM, GO, GEO, GWAS, HGNC, HMDB, HPO, ICD10, INSDC, IntAct, KEGG, LOINC, MP, MetaboLights, MONDO, NCBIGene, NCBITaxon, OMIM, PATO, PDB, PubChem, PXD, Reactome, RefSeq, RRID, SO, SRA, UBERON, UniProt, UniRef, WikiPathways
+FastIdentifiers.@reexport
 
-abstract type BioIdentifier <: AcademicIdentifier end
+export BioIdentifier, AFDB, ArrayExpress, BioGRID, BioProject, BioSample, CA,
+    CL, Cellosaurus, ChEBI, ChEMBL, ClinicalTrials, ClinVar, dbGaP, dbSNP,
+    dbVar, DOID, DrugBank, ECO, EFO, EGA, ENSG, ENST, ENSP, ENSE, ENSR, ENSF,
+    ENSFM, FlyBase, GEO, GO, GWAS, HGNC, HMDB, HPO, INSDC, IntAct, InterPro,
+    KEGG, MeSH, MetaboLights, MGI, MONDO, MP, NCBIGene, NCBITaxon, OMIM, PATO,
+    PDB, Pfam, PubChem, PXD, Reactome, RefSeq, RRID, SGD, SO, SRA, UBERON,
+    UniProt, UniRef, WikiPathways, WormBase
 
-abstract type OboIdentifier <: BioIdentifier end
+"""
+    BioIdentifier <: AbstractIdentifier
 
-macro numericid(name::Symbol, kws...)
-    namelower = Symbol(lowercase(string(name)))
-    urls, prefix, inttype, digits, maxdigits = String[], "", UInt64, 0, 0
-    for kw in kws
-        Meta.isexpr(kw, :(=), 2) || throw(ArgumentError("Expected keyword argument for numericid macro, got: $kw"))
-        key, val = kw.args
-        if key == :url
-            if val isa String
-                push!(urls, val)
-            elseif Meta.isexpr(val, :vect)
-                urls = Vector{String}(val.args)
-            else
-                throw(ArgumentError("Invalid url value: $val"))
-            end
-        elseif key == :prefix
-            prefix = val::String
-        elseif key == :digits
-            digits = val::Int
-        elseif key == :inttype
-            inttype = val::Symbol
-        else
-            throw(ArgumentError("Unknown keyword argument for numericid macro: $(kw.args[1])"))
+An abstract type representing a biological or biomedical identifier.
+
+See also: `AbstractIdentifier`.
+"""
+abstract type BioIdentifier <: AbstractIdentifier end
+
+# Local helpers for hand-written types
+
+"""
+    chopprefixes(str, prefixes...) -> (matched::Bool, rest::SubString)
+
+Case-insensitive prefix stripping.  All prefixes must be lowercase ASCII.
+"""
+function chopprefixes(str::AbstractString, prefixes::AbstractString...)
+    s = SubString(string(str))
+    matched = false
+    for prefix in prefixes
+        ncodeunits(s) >= ncodeunits(prefix) || continue
+        ok = true
+        for i in 1:ncodeunits(prefix)
+            (codeunit(s, i) | 0x20) == codeunit(prefix, i) || (ok = false; break)
         end
+        ok || continue
+        s = SubString(s, ncodeunits(prefix) + 1)
+        matched = true
     end
-    rmprefixes = String[]
-    if !isempty(urls)
-        push!(rmprefixes, "https://", "http://")
-        any(u -> startswith(u, "www."), urls) && push!(rmprefixes, "www.")
-        for url in urls
-            push!(rmprefixes, lowercase(chopprefix(url, "www.")))
-        end
-    end
-    isempty(prefix) || push!(rmprefixes, lowercase(prefix))
-    output = Expr[]
-    typearg = Expr(:(::), Expr(:curly, :Type, name))
-    push!(output, :(function parseid(::Type{$name}, id::SubString)
-        _, id = chopprefixes(id, $(rmprefixes...))
-        num = parsefor($(name), $inttype, id)
-        num isa $inttype || return num
-        $(name)(num)
-    end))
-    isempty(urls) || push!(output, :(purlprefix(::Type{$name}) = $("https://$(first(urls))")))
-    isempty(prefix) || if iszero(digits)
-        push!(output, :(shortcode($namelower::$name) = string($prefix, $namelower.id)))
-    else
-        push!(output, :(shortcode($namelower::$name) = string($prefix, lpad($namelower.id, $digits, '0'))))
-    end
-    push!(output, :(idcode($namelower::$name) = $namelower.id))
-    push!(output, :(Base.show(io::IO, $namelower::$name) = (show(io, $name); print(io, '(', $namelower.id, ')'))))
-    Expr(:block, output...) |> esc
+    matched, s
 end
 
-
+# ──────────────────────────────────────────────────────────────────
+# @defid types
+# ──────────────────────────────────────────────────────────────────
+
 # ArrayExpress
 
 """
@@ -162,40 +161,20 @@ julia> parse(ArrayExpress, "E-GEOD-5678")
 ArrayExpress:E-GEOD-5678
 ```
 """
-struct ArrayExpress <: BioIdentifier
-    platform::SubString{String}
-    number::UInt32
-end
+@defid(ArrayExpress <: BioIdentifier,
+       ("E-", :platform(letters(4:5, upper=true)), "-", :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ebi.ac.uk/biostudies/arrayexpress/studies/")
 
-function parseid(::Type{ArrayExpress}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ebi.ac.uk/biostudies/arrayexpress/studies/", "ebi.ac.uk/biostudies/arrayexpress/studies/")
-    startswith(id, "E-") || return MalformedIdentifier{ArrayExpress}(id, "must start with 'E-'")
-    parts = split(id, '-')
-    length(parts) == 3 || return MalformedIdentifier{ArrayExpress}(id, "must follow format E-<platform>-<number>")
-    platform, number = parts[2], parts[3]
-    (platform == "GEOD" || (4 <= length(platform) <= 5 && all(c -> isuppercase(c) && isletter(c), platform))) || return MalformedIdentifier{ArrayExpress}(id, "platform code must be 4-5 uppercase letters or 'GEOD'")
-    num = parsefor(ArrayExpress, UInt32, number)
-    num isa UInt32 || return num
-    ArrayExpress(SubString(platform), num)
-end
-
-purlprefix(::Type{ArrayExpress}) = "https://www.ebi.ac.uk/biostudies/arrayexpress/studies/"
-shortcode(ae::ArrayExpress) = "E-$(ae.platform)-$(ae.number)"
-idcode(ae::ArrayExpress) = ae.number
-
-Base.show(io::IO, ae::ArrayExpress) = (show(io, ArrayExpress); show(io, (ae.platform, ae.number)))
-
-
 # BioGRID
 
 """
     BioGRID <: BioIdentifier
 
-BioGRID molecular interaction database identifier.
+A [BioGRID](https://thebiogrid.org/) identifier for molecular interaction records.
 
-BioGRID is a biomedical interaction repository with data compiled through comprehensive
-curation efforts. Identifiers are simple positive integers. Parsing may throw a
-`MalformedIdentifier` if the format is invalid.
+The Biological General Repository for Interaction Datasets (BioGRID) curates
+genetic and protein interactions from the primary literature across all major
+model organisms. Identifiers are positive integers.
 
 # Examples
 
@@ -207,13 +186,10 @@ julia> parse(BioGRID, "https://thebiogrid.org/789012")
 BioGRID:789012
 ```
 """
-struct BioGRID <: BioIdentifier
-    id::UInt64
-end
+@defid(BioGRID <: BioIdentifier,
+       :id(digits(UInt32)),
+       prefix="", purlprefix="https://thebiogrid.org/")
 
-@numericid BioGRID url = ["www.thebiogrid.org/", "wiki.thebiogrid.org/"] inttype = UInt64
-
-
 # BioProject
 
 """
@@ -235,33 +211,10 @@ julia> parse(BioProject, "PRJEB789012")
 BioProject:PRJEB789012
 ```
 """
-struct BioProject <: BioIdentifier
-    database::UInt8
-    number::UInt64
-end
+@defid(BioProject <: BioIdentifier,
+       (:prefix(choice("PRJNA", "PRJEB", "PRJDB")), :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/bioproject/")
 
-const BIOPROJECT_PREFIXES = ("prjna", "prjeb", "prjdb")
-
-function parseid(::Type{BioProject}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/bioproject/", "ncbi.nlm.nih.gov/bioproject/")
-    for (i, prefix) in enumerate(BIOPROJECT_PREFIXES)
-        found, remainder = chopprefixes(id, prefix)
-        if found
-            number = parsefor(BioProject, UInt64, remainder)
-            number isa UInt64 || return number
-            return BioProject(UInt8(i), number)
-        end
-    end
-    MalformedIdentifier{BioProject}(id, "must start with PRJNA, PRJEB, or PRJDB")
-end
-
-purlprefix(::Type{BioProject}) = "https://www.ncbi.nlm.nih.gov/bioproject/"
-shortcode(bp::BioProject) = string(uppercase(BIOPROJECT_PREFIXES[bp.database]), bp.number)
-idcode(bp::BioProject) = bp.number
-
-Base.show(io::IO, bp::BioProject) = (show(io, BioProject); show(io, (uppercase(BIOPROJECT_PREFIXES[bp.database]), bp.number)))
-
-
 # BioSample
 
 """
@@ -283,33 +236,10 @@ julia> parse(BioSample, "SAMEA9876543")
 BioSample:SAMEA9876543
 ```
 """
-struct BioSample <: BioIdentifier
-    database::UInt8
-    number::UInt64
-end
+@defid(BioSample <: BioIdentifier,
+       (:prefix(choice("SAMN", "SAMEA", "SAMD")), :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/biosample/")
 
-const BIOSAMPLE_PREFIXES = ("samn", "samea", "samd")
-
-function parseid(::Type{BioSample}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/biosample/", "ncbi.nlm.nih.gov/biosample/")
-    for (i, prefix) in enumerate(BIOSAMPLE_PREFIXES)
-        found, remainder = chopprefixes(id, prefix)
-        if found
-            number = parsefor(BioSample, UInt64, remainder)
-            number isa UInt64 || return number
-            return BioSample(UInt8(i), number)
-        end
-    end
-    return MalformedIdentifier{BioSample}(id, "must start with SAMN, SAMEA, or SAMD")
-end
-
-purlprefix(::Type{BioSample}) = "https://www.ncbi.nlm.nih.gov/biosample/"
-shortcode(bs::BioSample) = string(uppercase(BIOSAMPLE_PREFIXES[bs.database]), bs.number)
-idcode(bs::BioSample) = bs.number
-
-Base.show(io::IO, bs::BioSample) = (show(io, BioSample); show(io, (uppercase(BIOSAMPLE_PREFIXES[bs.database]), bs.number)))
-
-
 # CA
 
 """
@@ -326,169 +256,122 @@ if the format is invalid.
 
 ```julia
 julia> parse(CA, "CA123456")
-CA:CA123456
+CA:123456
 
 julia> parse(CA, "https://reg.clinicalgenome.org/allele/CA789012")
-CA:CA789012
+CA:789012
 ```
 """
-struct CA <: BioIdentifier
-    id::UInt64
-end
+@defid(CA <: BioIdentifier,
+       ("CA", :id(digits(UInt32))),
+       prefix="", purlprefix="https://reg.clinicalgenome.org/allele/")
 
-@numericid CA url = "reg.clinicalgenome.org/allele/" prefix = "CA" inttype = UInt64
-
-
-
-
 # CL
 
 """
     CL <: BioIdentifier
 
-Cell Ontology term identifier for cross-species cell types.
+A [Cell Ontology](https://obofoundry.org/ontology/cl.html) term identifier for cross-species cell types.
 
-The Cell Ontology is designed to represent the in vivo and in vitro cells of animals,
-plants, fungi and other organisms. Identifiers follow format `CL:<7 digits>`.
-Parsing may throw a `MalformedIdentifier` if the format is invalid.
+Part of the [OBO Foundry](https://obofoundry.org/), the Cell Ontology represents
+in vivo and in vitro cell types across animals, plants, fungi and other
+organisms. It is used for cell type annotation in single-cell RNA-seq
+experiments and phenotype ontologies. Identifiers follow the format `CL:`
+followed by 7 zero-padded digits.
 
 # Examples
 
 ```julia
 julia> parse(CL, "CL:0000001")
-CL:CL:0000001
+CL:0000001
 
 julia> parse(CL, "0000001")
-CL:CL:0000001
+CL:0000001
 ```
 """
-struct CL <: BioIdentifier
-    id::UInt32
-end
+@defid(CL <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="CL:", purlprefix="https://purl.obolibrary.org/obo/CL_")
 
-function parseid(::Type{CL}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "purl.obolibrary.org/obo/CL_", "CL:")
-    all(isdigit, id) && length(id) == 7 || return MalformedIdentifier{CL}(id, "must be 7 digits (optionally prefixed with CL:)")
-    num = parsefor(CL, UInt32, id)
-    num isa UInt32 || return num
-    CL(num)
-end
-
-function purl(cl::CL)
-    digits = lpad(cl.id, 7, '0')
-    "https://purl.obolibrary.org/obo/CL_$(digits)"
-end
-
-shortcode(cl::CL) = string("CL:", lpad(cl.id, 7, '0'))
-idcode(cl::CL) = cl.id
-
-
 # Cellosaurus
 
 """
     Cellosaurus <: BioIdentifier
 
-Cellosaurus authoritative cell line registry identifier.
+A [Cellosaurus](https://www.cellosaurus.org/) cell line registry identifier.
 
-Cellosaurus is a knowledge resource on cell lines providing extensive information
-including origin, synonyms, and references. Identifiers follow format `CVCL_<4-7 digits>`.
-Parsing may throw a `MalformedIdentifier` if the format is invalid.
+Maintained by the [SIB Swiss Institute of Bioinformatics](https://www.sib.swiss/),
+Cellosaurus is the most comprehensive knowledge resource on cell lines,
+providing information on origin, cross-contamination, synonyms, and
+references. Identifiers follow the format `CVCL_` followed by 1–7 digits.
 
 # Examples
 
 ```julia
 julia> parse(Cellosaurus, "CVCL_0001")
-Cellosaurus:CVCL_0001
+Cellosaurus:CVCL_1
 
 julia> parse(Cellosaurus, "CVCL_1234567")
 Cellosaurus:CVCL_1234567
 ```
 """
-struct Cellosaurus <: BioIdentifier
-    id::UInt32
-end
+@defid(Cellosaurus <: BioIdentifier,
+       ("CVCL_", :id(digits(1:7))),
+       prefix="", purlprefix="https://www.cellosaurus.org/")
 
-@numericid Cellosaurus url = "www.cellosaurus.org/" prefix = "CVCL_" digits = 4 inttype = UInt32
-
-
-
-
-
 # ChEBI
 
 """
     ChEBI <: BioIdentifier
 
-Chemical Entities of Biological Interest (ChEBI) identifier.
+A [ChEBI](https://www.ebi.ac.uk/chebi/) identifier for chemical entities of biological interest.
 
-ChEBI is a dictionary of molecular entities focused on small chemical compounds.
-It provides an ontological classification and unambiguous nomenclature for chemical
-entities. Identifiers follow format `CHEBI:<number>`. Parsing may throw a
-`MalformedIdentifier` if the format is invalid.
+Maintained by the [European Bioinformatics Institute](https://www.ebi.ac.uk/)
+(EMBL-EBI), ChEBI is a freely available ontology of molecular entities focused
+on small chemical compounds. It provides systematic nomenclature, ontological
+classification, and links to reactions and pathways. Identifiers follow the
+format `CHEBI:` followed by a positive integer.
 
 # Examples
 
 ```julia
 julia> parse(ChEBI, "CHEBI:15377")
-ChEBI:CHEBI:15377
+ChEBI:15377
 
 julia> parse(ChEBI, "15377")
-ChEBI:CHEBI:15377
+ChEBI:15377
 ```
 """
-struct ChEBI <: BioIdentifier
-    id::UInt32
-end
+@defid(ChEBI <: BioIdentifier,
+       :id(digits(UInt32)),
+       prefix="CHEBI:", purlprefix="https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:")
 
-@numericid ChEBI url = "www.ebi.ac.uk/chebi/searchId.do?chebiId=" prefix = "CHEBI:" inttype = UInt32
-
-function purl(chebi::ChEBI)
-    "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:$(chebi.id)"
-end
-
-
-
-
 # ChEMBL
 
 """
     ChEMBL <: BioIdentifier
 
-ChEMBL database identifier for bioactive compounds, targets, and assays.
+A [ChEMBL](https://www.ebi.ac.uk/chembl/) identifier for bioactive compounds, targets, and assays.
 
-ChEMBL is a manually curated database of bioactive molecules with drug-like
-properties. Identifiers follow format CHEMBL<number> for molecules, targets,
-and assays. Parsing may throw a `MalformedIdentifier` if the format is invalid.
+Maintained by [EMBL-EBI](https://www.ebi.ac.uk/), ChEMBL is a manually curated
+database of bioactive molecules with drug-like properties, widely used in drug
+discovery and chemical biology. Identifiers follow the format `CHEMBL` followed
+by a positive integer.
 
 # Examples
 
 ```julia
 julia> parse(ChEMBL, "CHEMBL25")
-ChEMBL:CHEMBL25
+ChEMBL:25
 
 julia> parse(ChEMBL, "CHEMBL1075272")
-ChEMBL:CHEMBL1075272
+ChEMBL:1075272
 ```
 """
-struct ChEMBL <: BioIdentifier
-    id::UInt64
-end
+@defid(ChEMBL <: BioIdentifier,
+       ("CHEMBL", :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ebi.ac.uk/chembl/compound_report_card/")
 
-@numericid ChEMBL url = ["www.ebi.ac.uk/chembl/compound_report_card/", "www.ebi.ac.uk/chembl/target_report_card/", "www.ebi.ac.uk/chembl/assay_report_card/"] prefix = "CHEMBL" inttype = UInt64
-
-function parseid(::Type{ChEMBL}, id::SubString)
-    _, id = chopprefixes(id, "www.ebi.ac.uk/chembl/compound_report_card/", "www.ebi.ac.uk/chembl/target_report_card/", "www.ebi.ac.uk/chembl/assay_report_card/", "ebi.ac.uk/chembl/compound_report_card/", "ebi.ac.uk/chembl/target_report_card/", "ebi.ac.uk/chembl/assay_report_card/", "CHEMBL")
-    remainder = startswith(id, "CHEMBL") ? id[7:end] : id
-    all(isdigit, remainder) || return MalformedIdentifier{ChEMBL}(id, "must contain only digits after 'CHEMBL'")
-    isempty(remainder) && return MalformedIdentifier{ChEMBL}(id, "must have a number after 'CHEMBL'")
-    num = parsefor(ChEMBL, UInt64, remainder)
-    num isa UInt64 || return num
-    num == 0 && return MalformedIdentifier{ChEMBL}(id, "number must be positive")
-    ChEMBL(num)
-end
-
-
-
 # ClinVar
 
 """
@@ -511,63 +394,25 @@ julia> parse(ClinVar, "RCV000789012.2")
 ClinVar:RCV000789012.2
 ```
 """
-struct ClinVar <: BioIdentifier
-    type::UInt8
-    number::UInt64
-    version::UInt16
-end
+@defid(ClinVar <: BioIdentifier,
+       (choice(seq("VCV", :id(digits(UInt32, pad=9))),
+               seq("RCV", :id(digits(1:8, pad=8))),
+               seq("SCV", :id(digits(1:8, pad=8)))),
+        optional(".", :ver(digits(1:5)))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/clinvar/")
 
-const CLINVAR_PREFIXES = ("vcv", "rcv", "scv")
-
-function parseid(::Type{ClinVar}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/clinvar/", "ncbi.nlm.nih.gov/clinvar/")
-    for (i, prefix) in enumerate(CLINVAR_PREFIXES)
-        found, remainder = chopprefixes(id, prefix)
-        if found
-            number_str, version = if '.' in remainder
-                parts = split(remainder, '.', limit=2)
-                version_str = parts[2]
-                isempty(version_str) && return MalformedIdentifier{ClinVar}(id, "version cannot be empty after period")
-                parsed_version = parsefor(ClinVar, UInt16, version_str)
-                parsed_version isa UInt16 || return parsed_version
-                parts[1], parsed_version
-            else
-                remainder, UInt16(0)
-            end
-            number = parsefor(ClinVar, UInt64, number_str)
-            number isa UInt64 || return number
-            return ClinVar(UInt8(i), number, version)
-        end
-    end
-    return MalformedIdentifier{ClinVar}(id, "must start with VCV, RCV, or SCV")
-end
-
-purlprefix(::Type{ClinVar}) = "https://www.ncbi.nlm.nih.gov/clinvar/"
-function shortcode(cv::ClinVar)
-    prefix = uppercase(CLINVAR_PREFIXES[cv.type])
-    # VCV uses 9 digits, RCV/SCV can use 8 or 9 digits
-    pad_length = cv.type == 1 ? 9 : 8  # VCV=1, RCV=2, SCV=3
-    if cv.version == 0
-        string(prefix, lpad(cv.number, pad_length, '0'))
-    else
-        string(prefix, lpad(cv.number, pad_length, '0'), '.', cv.version)
-    end
-end
-idcode(cv::ClinVar) = cv.number
-
-Base.show(io::IO, cv::ClinVar) = (show(io, ClinVar); show(io, (uppercase(CLINVAR_PREFIXES[cv.type]), cv.number, cv.version)))
-
-
 # ClinicalTrials
 
 """
     ClinicalTrials <: BioIdentifier
 
-ClinicalTrials.gov registry identifier for interventional/observational studies.
+A [ClinicalTrials.gov](https://clinicaltrials.gov/) registry identifier for clinical studies.
 
-ClinicalTrials.gov is a database of privately and publicly funded clinical studies
-conducted around the world. Identifiers follow format `NCT<8 digits>`. Parsing may
-throw a `MalformedIdentifier` if the format is invalid.
+Maintained by the [U.S. National Library of Medicine](https://www.nlm.nih.gov/),
+ClinicalTrials.gov is the largest registry of clinical studies worldwide,
+covering interventional and observational studies across all diseases and
+conditions. Identifiers follow the format `NCT` followed by 8 zero-padded
+digits.
 
 # Examples
 
@@ -579,24 +424,10 @@ julia> parse(ClinicalTrials, "https://clinicaltrials.gov/ct2/show/NCT01234567")
 ClinicalTrials:NCT01234567
 ```
 """
-struct ClinicalTrials <: BioIdentifier
-    id::UInt32
-end
+@defid(ClinicalTrials <: BioIdentifier,
+       ("NCT", :id(digits(8, pad=8))),
+       prefix="", purlprefix="https://clinicaltrials.gov/ct2/show/")
 
-@numericid ClinicalTrials url = "clinicaltrials.gov/ct2/show/" prefix = "NCT" digits = 8 inttype = UInt32
-
-function parseid(::Type{ClinicalTrials}, id::SubString)
-    _, id = chopprefixes(id, "clinicaltrials.gov/ct2/show/", "clinicaltrials.gov/show/")
-    found, remainder = chopprefixes(id, "nct")
-    found || return MalformedIdentifier{ClinicalTrials}(id, "must start with 'NCT'")
-    length(remainder) == 8 && all(isdigit, remainder) || return MalformedIdentifier{ClinicalTrials}(id, "must have exactly 8 digits after 'NCT'")
-    num = parsefor(ClinicalTrials, UInt32, remainder)
-    num isa UInt32 || return num
-    ClinicalTrials(num)
-end
-
-
-
 # dbGaP
 
 """
@@ -619,46 +450,11 @@ julia> parse(dbGaP, "phs123456.v2.p3")
 dbGaP:phs123456.v2.p3
 ```
 """
-struct dbGaP <: BioIdentifier
-    study::UInt32
-    version::UInt16
-    participant::UInt16
-end
+@defid(dbGaP <: BioIdentifier,
+       ("phs", :study(digits(6, pad=6)), ".v", :ver(digits(1:2)),
+        ".p", :participant(digits(1:2))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/gap/")
 
-function parseid(::Type{dbGaP}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=", "ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=")
-    found, remainder = chopprefixes(id, "phs")
-    found || return MalformedIdentifier{dbGaP}(id, "must start with 'phs'")
-    parts = split(remainder, '.')
-    length(parts) == 3 || return MalformedIdentifier{dbGaP}(id, "must follow format phs<number>.v<version>.p<participant>")
-    study_str = parts[1]
-    length(study_str) == 6 && all(isdigit, study_str) || return MalformedIdentifier{dbGaP}(id, "study number must be exactly 6 digits")
-    study = parsefor(dbGaP, UInt32, study_str)
-    study isa UInt32 || return study
-    version_part = parts[2]
-    version_found, version_remainder = chopprefixes(version_part, "v")
-    version_found || return MalformedIdentifier{dbGaP}(id, "version part must start with 'v'")
-    version = parsefor(dbGaP, UInt16, version_remainder)
-    version isa UInt16 || return version
-    participant_part = parts[3]
-    participant_found, participant_remainder = chopprefixes(participant_part, "p")
-    participant_found || return MalformedIdentifier{dbGaP}(id, "participant part must start with 'p'")
-    participant = parsefor(dbGaP, UInt16, participant_remainder)
-    participant isa UInt16 || return participant
-    dbGaP(study, version, participant)
-end
-
-function purl(gap::dbGaP)
-    id = shortcode(gap)
-    "https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=$(id)"
-end
-
-shortcode(dbgap::dbGaP) = "phs$(lpad(dbgap.study, 6, '0')).v$(dbgap.version).p$(dbgap.participant)"
-idcode(dbgap::dbGaP) = dbgap.study
-
-Base.show(io::IO, dbgap::dbGaP) = (show(io, dbGaP); show(io, (dbgap.study, dbgap.version, dbgap.participant)))
-
-
 # dbSNP
 
 """
@@ -680,16 +476,10 @@ julia> parse(dbSNP, "https://www.ncbi.nlm.nih.gov/snp/rs789012")
 dbSNP:rs789012
 ```
 """
-struct dbSNP <: BioIdentifier
-    id::UInt32
-end
+@defid(dbSNP <: BioIdentifier,
+       ("rs", :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/snp/")
 
-@numericid dbSNP url = "www.ncbi.nlm.nih.gov/snp/" prefix = "rs" inttype = UInt32
-
-
-
-
-
 # dbVar
 
 """
@@ -713,68 +503,62 @@ julia> parse(dbVar, "nssv789012")
 dbVar:nssv789012
 ```
 """
-struct dbVar <: BioIdentifier
-    type::UInt8
-    number::UInt32
-end
+@defid(dbVar <: BioIdentifier,
+       (:prefix(choice("nsv", "nssv", "nstd")), :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/dbvar/")
 
-const DBVAR_PREFIXES = ("nsv", "nssv", "nstd")
-
-function parseid(::Type{dbVar}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/dbvar/", "ncbi.nlm.nih.gov/dbvar/")
-    for (i, prefix) in enumerate(DBVAR_PREFIXES)
-        found, remainder = chopprefixes(id, prefix)
-        if found
-            number = parsefor(dbVar, UInt32, remainder)
-            number isa UInt32 || return number
-            return dbVar(UInt8(i), number)
-        end
-    end
-    return MalformedIdentifier{dbVar}(id, "must start with nsv, nssv, or nstd")
-end
-
-purlprefix(::Type{dbVar}) = "https://www.ncbi.nlm.nih.gov/dbvar/"
-shortcode(dbvar::dbVar) = string(uppercase(DBVAR_PREFIXES[dbvar.type]), dbvar.number)
-idcode(dbvar::dbVar) = dbvar.number
-
-Base.show(io::IO, dbvar::dbVar) = (show(io, dbVar); show(io, (uppercase(DBVAR_PREFIXES[dbvar.type]), dbvar.number)))
-
-
 # DOID
 
 """
     DOID <: BioIdentifier
 
-Disease Ontology identifier for human diseases.
+A [Disease Ontology](https://disease-ontology.org/) (DO) identifier for human diseases.
 
-The Human Disease Ontology provides a standardized ontology for human disease with
-the purpose of providing the biomedical community with consistent, reusable and
-sustainable descriptions of human disease terms. Identifiers follow format `DOID:<number>`.
-Parsing may throw a `MalformedIdentifier` if the format is invalid.
+Part of the [OBO Foundry](https://obofoundry.org/), the Human Disease Ontology
+provides standardised, reusable descriptions of human disease terms that
+integrate medical vocabularies (MeSH, ICD, SNOMED CT). Identifiers follow
+the format `DOID:` followed by 7 zero-padded digits.
 
 # Examples
 
 ```julia
 julia> parse(DOID, "DOID:0001816")
-DOID:DOID:0001816
+DOID:0001816
 
 julia> parse(DOID, "0001816")
-DOID:DOID:0001816
+DOID:0001816
 ```
 """
-struct DOID <: BioIdentifier
-    id::UInt32
-end
+@defid(DOID <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="DOID:", purlprefix="https://purl.obolibrary.org/obo/DOID_")
 
-@numericid DOID url = "purl.obolibrary.org/obo/DOID_" prefix = "DOID:" digits = 7 inttype = UInt32
+# ECO
 
-function purl(doid::DOID)
-    digits = lpad(doid.id, 7, '0')
-    "https://purl.obolibrary.org/obo/DOID_$(digits)"
-end
+"""
+    ECO <: BioIdentifier
 
+Evidence & Conclusion Ontology identifier.
 
-
+The Evidence & Conclusion Ontology (ECO) describes types of scientific evidence
+within the realm of biological research. ECO terms are used in UniProt, GO,
+and ClinVar annotations to describe the evidence supporting biological
+assertions. Parsing may throw a `MalformedIdentifier` if the format is invalid.
+
+# Examples
+
+```julia
+julia> parse(ECO, "ECO:0000313")
+ECO:0000313
+
+julia> parse(ECO, "0000269")
+ECO:0000269
+```
+"""
+@defid(ECO <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="ECO:", purlprefix="https://purl.obolibrary.org/obo/ECO_")
+
 # EFO
 
 """
@@ -792,35 +576,28 @@ if the format is invalid.
 
 ```julia
 julia> parse(EFO, "EFO:0000001")
-EFO:EFO:0000001
+EFO:0000001
 
 julia> parse(EFO, "0000001")
-EFO:EFO:0000001
+EFO:0000001
 ```
 """
-struct EFO <: BioIdentifier
-    id::UInt32
-end
+@defid(EFO <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="EFO:", purlprefix="https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=EFO_")
 
-@numericid EFO url = "www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=" prefix = "EFO:" digits = 7 inttype = UInt32
-
-function purl(efo::EFO)
-    "https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=EFO:$(lpad(efo.id, 7, '0'))"
-end
-
-
-
 # EGA
 
 """
     EGA <: BioIdentifier
 
-European Genome-phenome Archive controlled-access identifier.
+An [EGA](https://ega-archive.org/) (European Genome-phenome Archive) controlled-access data identifier.
 
-The European Genome-phenome Archive provides a service for permanent archiving and
-sharing of personally identifiable genetic and phenotypic data resulting from
-biomedical research projects. Identifiers follow formats EGAD/EGAS<11 digits> for
-dataset/study records respectively. Parsing may throw a `MalformedIdentifier` if the format is invalid.
+Operated by [EMBL-EBI](https://www.ebi.ac.uk/) and [CRG](https://www.crg.eu/),
+the EGA provides permanent archiving and controlled sharing of personally
+identifiable genetic and phenotypic data from biomedical research. Identifiers
+use prefix `EGAD` (dataset) or `EGAS` (study) followed by 11 zero-padded
+digits.
 
 # Examples
 
@@ -832,259 +609,10 @@ julia> parse(EGA, "EGAS00001000002")
 EGA:EGAS00001000002
 ```
 """
-struct EGA <: BioIdentifier
-    type::UInt8
-    number::UInt64
-end
+@defid(EGA <: BioIdentifier,
+       (:prefix(choice("EGAD", "EGAS")), :id(digits(11, pad=11))),
+       prefix="", purlprefix="https://ega-archive.org/")
 
-const EGA_PREFIXES = ("egad", "egas")
-
-function parseid(::Type{EGA}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "ega-archive.org/datasets/", "ega-archive.org/studies/")
-    for (i, prefix) in enumerate(EGA_PREFIXES)
-        found, remainder = chopprefixes(id, prefix)
-        if found
-            length(remainder) == 11 && all(isdigit, remainder) || return MalformedIdentifier{EGA}(id, "must have exactly 11 digits after prefix")
-            num = parsefor(EGA, UInt64, remainder)
-            num isa UInt64 || return num
-            return EGA(UInt8(i), num)
-        end
-    end
-    return MalformedIdentifier{EGA}(id, "must start with EGAD or EGAS")
-end
-
-function purl(ega::EGA)
-    id = shortcode(ega)
-    base_url = ega.type == 1 ? "https://ega-archive.org/datasets/" : "https://ega-archive.org/studies/"
-    "$(base_url)$(id)"
-end
-
-shortcode(ega::EGA) = string(uppercase(EGA_PREFIXES[ega.type]), lpad(ega.number, 11, '0'))
-idcode(ega::EGA) = ega.number
-
-Base.show(io::IO, ega::EGA) = (show(io, EGA); show(io, (uppercase(EGA_PREFIXES[ega.type]), ega.number)))
-
-
-# ECO
-
-"""
-    ECO <: BioIdentifier
-
-Evidence & Conclusion Ontology identifier.
-
-The Evidence & Conclusion Ontology (ECO) describes types of scientific evidence
-within the realm of biological research. ECO terms are used in UniProt, GO,
-and ClinVar annotations to describe the evidence supporting biological
-assertions. Parsing may throw a `MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(ECO, "ECO:0000313")
-ECO:ECO:0000313
-
-julia> parse(ECO, "0000269")
-ECO:ECO:0000269
-```
-"""
-struct ECO <: BioIdentifier
-    id::UInt32
-end
-
-@numericid ECO url = "purl.obolibrary.org/obo/ECO_" prefix = "ECO:" digits = 7 inttype = UInt32
-
-function parseid(::Type{ECO}, id::SubString)
-    _, id = chopprefixes(id, "purl.obolibrary.org/obo/ECO_", "ECO:")
-    length(id) == 7 && all(isdigit, id) || return MalformedIdentifier{ECO}(id, "must be 7 digits (optionally prefixed with ECO:)")
-    num = parsefor(ECO, UInt32, id)
-    num isa UInt32 || return num
-    ECO(num)
-end
-
-function purl(eco::ECO)
-    digits = lpad(eco.id, 7, '0')
-    "https://purl.obolibrary.org/obo/ECO_$(digits)"
-end
-
-
-
-
-# Ensembl
-
-"""
-    EnsemblIdentifier{T} <: BioIdentifier
-
-Ensembl stable identifier for genome features.
-
-Ensembl creates, integrates and distributes reference datasets and analysis tools
-that enable genomics research. Identifiers follow various formats for different
-feature types, optionally with version suffix. Parsing may throw a `MalformedIdentifier`
-if the format is invalid.
-
-Type parameter `T` indicates the feature type:
-- `:Gene` (ENSG) - Gene identifiers
-- `:Transcript` (ENST) - Transcript identifiers
-- `:Protein` (ENSP) - Protein/peptide identifiers
-- `:Exon` (ENSE) - Exon identifiers
-- `:Regulatory` (ENSR) - Regulatory feature identifiers
-- `:Family` (ENSF) - Protein family identifiers
-- `:FamilyMember` (ENSFM) - Protein family member identifiers
-
-# Examples
-
-```julia
-julia> parse(ENSG, "ENSG00000141510")
-ENSG:ENSG00000141510
-
-julia> parse(ENST, "ENST00000269305.v4")
-ENST:ENST00000269305.4
-
-julia> parse(ENSE, "ENSE00001234567")
-ENSE:ENSE00001234567
-```
-"""
-struct EnsemblIdentifier{T} <: BioIdentifier
-    number::UInt64
-    version::Union{UInt16,Nothing}
-end
-
-# Type aliases for specific Ensembl identifier types
-const ENSG = EnsemblIdentifier{:Gene}
-const ENST = EnsemblIdentifier{:Transcript}
-const ENSP = EnsemblIdentifier{:Protein}
-const ENSE = EnsemblIdentifier{:Exon}
-const ENSR = EnsemblIdentifier{:Regulatory}
-const ENSF = EnsemblIdentifier{:Family}
-const ENSFM = EnsemblIdentifier{:FamilyMember}
-# Parallel tuples for type symbols and prefixes
-const ENSEMBL_TYPES = (:Gene, :Transcript, :Protein, :Exon, :Regulatory, :Family, :FamilyMember)
-const ENSEMBL_PREFIXES = ("ensg", "enst", "ensp", "ense", "ensr", "ensf", "ensfm")
-
-function parseid(::Type{EnsemblIdentifier{kind}}, id::SubString) where {kind}
-    isempty(id) && return MalformedIdentifier{EnsemblIdentifier{kind}}(id, "cannot be empty")
-    _, id = chopprefixes(id, "https://", "http://", "www.ensembl.org/id/", "ensembl.org/id/")
-    version = nothing
-    original_id = id
-    if contains(id, ".v")
-        return MalformedIdentifier{EnsemblIdentifier{kind}}(original_id, "version should use dot notation (.1) not v notation (v1)")
-    elseif contains(id, ".")
-        parts = split(id, ".")
-        length(parts) == 2 || return MalformedIdentifier{EnsemblIdentifier{kind}}(original_id, "invalid version format")
-        id, version_str = parts
-        version_num = parsefor(EnsemblIdentifier{kind}, UInt16, version_str)
-        version_num isa UInt16 || return version_num
-        version = version_num
-    end
-    type_index = findfirst(==(kind), ENSEMBL_TYPES)
-    type_index === nothing && error("Unknown Ensembl type: $kind")
-    expected_prefix = ENSEMBL_PREFIXES[type_index]
-    if startswith(lowercase(id), expected_prefix)
-        remainder = @view id[length(expected_prefix)+1:end]
-    else
-        return MalformedIdentifier{EnsemblIdentifier{kind}}(original_id, "must start with $(uppercase(expected_prefix))")
-    end
-    length(remainder) == 11 && all(isdigit, remainder) ||
-        return MalformedIdentifier{EnsemblIdentifier{kind}}(original_id, "must have exactly 11 digits after prefix")
-    num = parsefor(EnsemblIdentifier{kind}, UInt64, remainder)
-    num isa UInt64 || return num
-    EnsemblIdentifier{kind}(num, version)
-end
-
-function parseid(::Type{EnsemblIdentifier}, id::SubString)
-    isempty(id) && return MalformedIdentifier{EnsemblIdentifier}(id, "cannot be empty")
-    _, id = chopprefixes(id, "https://", "http://", "www.ensembl.org/id/", "ensembl.org/id/")
-    version = nothing
-    original_id = id
-    if contains(id, ".v")
-        return MalformedIdentifier{EnsemblIdentifier}(original_id, "version should use dot notation (.1) not v notation (v1)")
-    elseif contains(id, ".")
-        parts = split(id, ".")
-        length(parts) == 2 || return MalformedIdentifier{EnsemblIdentifier}(original_id, "invalid version format")
-        id, version_str = parts
-        version_num = parsefor(EnsemblIdentifier, UInt16, version_str)
-        version_num isa UInt16 || return version_num
-        version = version_num
-    end
-    for (i, prefix) in enumerate(ENSEMBL_PREFIXES)
-        if startswith(lowercase(id), prefix)
-            remainder = @view id[length(prefix)+1:end]
-            length(remainder) == 11 && all(isdigit, remainder) ||
-                return MalformedIdentifier{EnsemblIdentifier}(original_id, "must have exactly 11 digits after prefix")
-            num = parsefor(EnsemblIdentifier, UInt64, remainder)
-            num isa UInt64 || return num
-            return EnsemblIdentifier{ENSEMBL_TYPES[i]}(num, version)
-        end
-    end
-    MalformedIdentifier{EnsemblIdentifier}(original_id, "must start with a valid Ensembl prefix (ENSG, ENST, ENSP, ENSE, ENSR, ENSF, ENSFM)")
-end
-
-purlprefix(::Type{<:EnsemblIdentifier}) = "https://www.ensembl.org/id/"
-function shortcode(ens::EnsemblIdentifier{T}) where {T}
-    type_index = findfirst(==(T), ENSEMBL_TYPES)
-    prefix = uppercase(ENSEMBL_PREFIXES[type_index])
-    base = string(prefix, lpad(ens.number, 11, '0'))
-    if isnothing(ens.version)
-        base
-    else
-        string(base, '.', ens.version)
-    end
-end
-
-idcode(ens::EnsemblIdentifier) = ens.number
-
-function Base.show(io::IO, ens::EnsemblIdentifier{T}) where {T}
-    type_index = findfirst(==(T), ENSEMBL_TYPES)
-    prefix = uppercase(ENSEMBL_PREFIXES[type_index])
-    show(io, EnsemblIdentifier{T})
-    print(io, '(', ens.number)
-    isnothing(ens.version) || print(io, ", ", ens.version)
-    print(io, ')')
-end
-
-
-# GO
-
-"""
-    GO <: BioIdentifier
-
-Gene Ontology term identifier.
-
-The Gene Ontology provides a framework for the model of biology through a structured
-controlled vocabulary. It covers three domains: cellular component, molecular function,
-and biological process. Identifiers follow format `GO:<7 digits>`. Parsing may throw
-a `MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(GO, "GO:0006915")
-GO:GO:0006915
-
-julia> parse(GO, "0006915")
-GO:GO:0006915
-```
-"""
-struct GO <: BioIdentifier
-    id::UInt32
-end
-
-@numericid GO url = "purl.obolibrary.org/obo/GO_" prefix = "GO:" digits = 7 inttype = UInt32
-
-function parseid(::Type{GO}, id::SubString)
-    _, id = chopprefixes(id, "purl.obolibrary.org/obo/GO_", "GO:")
-    all(isdigit, id) && length(id) == 7 || return MalformedIdentifier{GO}(id, "must be 7 digits (optionally prefixed with GO:)")
-    num = parsefor(GO, UInt32, id)
-    num isa UInt32 || return num
-    GO(num)
-end
-
-function purl(go::GO)
-    digits = lpad(go.id, 7, '0')
-    "https://purl.obolibrary.org/obo/GO_$(digits)"
-end
-
-
-
 # GEO
 
 """
@@ -1107,37 +635,37 @@ julia> parse(GEO, "GPL570")
 GEO:GPL570
 ```
 """
-struct GEO <: BioIdentifier
-    type::UInt8
-    number::UInt64
-end
+@defid(GEO <: BioIdentifier,
+       (:prefix(choice("GPL", "GSM", "GSE", "GDS")), :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=")
 
-const GEO_PREFIXES = ("gpl", "gsm", "gse", "gds")
+# GO
 
-function parseid(::Type{GEO}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=", "ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=")
-    for (i, prefix) in enumerate(GEO_PREFIXES)
-        found, remainder = chopprefixes(id, prefix)
-        if found
-            number = parsefor(GEO, UInt64, remainder)
-            number isa UInt64 || return number
-            return GEO(UInt8(i), number)
-        end
-    end
-    return MalformedIdentifier{GEO}(id, "must start with GPL, GSM, GSE, or GDS")
-end
+"""
+    GO <: BioIdentifier
 
-function purl(geo::GEO)
-    id = shortcode(geo)
-    "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=$(id)"
-end
+A [Gene Ontology](http://geneontology.org/) (GO) term identifier.
 
-shortcode(geo::GEO) = string(uppercase(GEO_PREFIXES[geo.type]), geo.number)
-idcode(geo::GEO) = geo.number
+The Gene Ontology, maintained by the [GO Consortium](http://geneontology.org/),
+is the most widely used structured vocabulary in genomics. It covers three
+domains — cellular component, molecular function, and biological process — and
+is used for functional annotation across all sequenced organisms. Identifiers
+follow the format `GO:` followed by 7 zero-padded digits.
 
-Base.show(io::IO, geo::GEO) = (show(io, GEO); show(io, (uppercase(GEO_PREFIXES[geo.type]), geo.number)))
+# Examples
 
-
+```julia
+julia> parse(GO, "GO:0006915")
+GO:0006915
+
+julia> parse(GO, "0006915")
+GO:0006915
+```
+"""
+@defid(GO <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="GO:", purlprefix="https://purl.obolibrary.org/obo/GO_")
+
 # HGNC
 
 """
@@ -1154,21 +682,705 @@ if the format is invalid.
 
 ```julia
 julia> parse(HGNC, "HGNC:5")
-HGNC:HGNC:5
+HGNC:5
 
 julia> parse(HGNC, "5")
-HGNC:HGNC:5
+HGNC:5
 ```
 """
-struct HGNC <: BioIdentifier
-    id::UInt32
+@defid(HGNC <: BioIdentifier,
+       :id(digits(1:5)),
+       prefix="HGNC:", purlprefix="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:")
+
+# HMDB
+
+"""
+    HMDB <: BioIdentifier
+
+A [Human Metabolome Database](https://hmdb.ca/) (HMDB) entry identifier.
+
+Maintained by the [Wishart Lab](http://www.wishartlab.com/) at the University
+of Alberta, HMDB contains detailed information about small molecule metabolites
+found in the human body, supporting metabolomics, clinical chemistry, and
+biomarker discovery. Identifiers follow the format `HMDB` followed by 7
+zero-padded digits.
+
+# Examples
+
+```julia
+julia> parse(HMDB, "HMDB0000001")
+HMDB:0000001
+
+julia> parse(HMDB, "https://hmdb.ca/metabolites/HMDB0123456")
+HMDB:0123456
+```
+"""
+@defid(HMDB <: BioIdentifier,
+       ("HMDB", :id(digits(7, pad=7))),
+       prefix="", purlprefix="https://hmdb.ca/metabolites/")
+
+# HPO
+
+"""
+    HPO <: BioIdentifier
+
+A [Human Phenotype Ontology](https://hpo.jax.org/) (HPO) term identifier.
+
+Developed by the [Monarch Initiative](https://monarchinitiative.org/) and
+part of the [OBO Foundry](https://obofoundry.org/), HPO provides a
+standardised vocabulary of phenotypic abnormalities observed in human disease.
+It is the standard for phenotype-driven diagnosis, rare disease databases
+(e.g. Orphanet, OMIM), and clinical genomics. Identifiers follow the format
+`HP:` followed by 7 zero-padded digits.
+
+# Examples
+
+```julia
+julia> parse(HPO, "HP:0000001")
+HPO:0000001
+
+julia> parse(HPO, "0000001")
+HPO:0000001
+```
+"""
+@defid(HPO <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="HP:", purlprefix="https://purl.obolibrary.org/obo/HP_")
+
+# IntAct
+
+"""
+    IntAct <: BioIdentifier
+
+IntAct protein interaction record identifier (EBI).
+
+IntAct provides a freely available, open source database system and analysis tools
+for molecular interaction data. All interactions are derived from literature curation
+or direct user submissions. Identifiers follow format `EBI-<number>`. Parsing may
+throw a `MalformedIdentifier` if the format is invalid.
+
+# Examples
+
+```julia
+julia> parse(IntAct, "EBI-123456")
+IntAct:EBI-123456
+
+julia> parse(IntAct, "https://www.ebi.ac.uk/intact/interaction/EBI-789012")
+IntAct:EBI-789012
+```
+"""
+@defid(IntAct <: BioIdentifier,
+       ("EBI-", :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ebi.ac.uk/intact/interaction/")
+
+# KEGG
+
+"""
+    KEGG <: BioIdentifier
+
+A [KEGG](https://www.kegg.jp/) (Kyoto Encyclopedia of Genes and Genomes) pathway map identifier.
+
+KEGG is an integrated database resource for systems-level understanding of
+biological processes, maintained by [Kanehisa Laboratories](https://www.kanehisa.jp/).
+Pathway map identifiers consist of a 3–4 letter organism code (e.g. `hsa` for
+human, `mmu` for mouse) followed by 5 zero-padded digits.
+
+# Examples
+
+```julia
+julia> parse(KEGG, "hsa00010")
+KEGG:hsa00010
+
+julia> parse(KEGG, "https://www.kegg.jp/entry/mmu04210")
+KEGG:mmu04210
+```
+"""
+@defid(KEGG <: BioIdentifier,
+       (:species(letters(3:4, lower=true)), :id(digits(5, pad=5))),
+       prefix="", purlprefix="https://www.kegg.jp/entry/")
+
+# MetaboLights
+
+"""
+    MetaboLights <: BioIdentifier
+
+A [MetaboLights](https://www.ebi.ac.uk/metabolights/) metabolomics study archive identifier.
+
+Hosted by [EMBL-EBI](https://www.ebi.ac.uk/), MetaboLights is a database for
+metabolomics experiments and derived information, serving as a recommended
+repository for metabolomics data submission by many journals. Identifiers
+follow the format `MTBLS` followed by a positive integer.
+
+# Examples
+
+```julia
+julia> parse(MetaboLights, "MTBLS1")
+MetaboLights:MTBLS1
+
+julia> parse(MetaboLights, "https://www.ebi.ac.uk/metabolights/MTBLS123")
+MetaboLights:MTBLS123
+```
+"""
+@defid(MetaboLights <: BioIdentifier,
+       ("MTBLS", :id(digits(UInt32))),
+       prefix="", purlprefix="https://www.ebi.ac.uk/metabolights/")
+
+# MONDO
+
+"""
+    MONDO <: BioIdentifier
+
+A [MONDO](https://mondo.monarchinitiative.org/) (Monarch Disease Ontology) unified disease identifier.
+
+Developed by the [Monarch Initiative](https://monarchinitiative.org/) and part
+of the [OBO Foundry](https://obofoundry.org/), MONDO harmonises disease
+definitions by merging multiple disease resources (OMIM, Orphanet, EFO, DOID,
+NCIt) into a single coherent ontology. Identifiers follow the format `MONDO:`
+followed by 7 zero-padded digits.
+
+# Examples
+
+```julia
+julia> parse(MONDO, "MONDO:0000001")
+MONDO:0000001
+
+julia> parse(MONDO, "0000001")
+MONDO:0000001
+```
+"""
+@defid(MONDO <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="MONDO:", purlprefix="https://purl.obolibrary.org/obo/MONDO_")
+
+# NCBIGene
+
+"""
+    NCBIGene <: BioIdentifier
+
+NCBI Entrez Gene numeric primary key.
+
+Entrez Gene provides a unified query environment for genes defined by sequence
+and/or in Map Viewer. Records include nomenclature, Reference Sequences,
+maps, pathways, variations, phenotypes, and links to genome, phenotype, and
+locus-specific resources. Identifiers are positive integers (≤ 10 digits).
+Parsing may throw a `MalformedIdentifier` if the format is invalid.
+
+# Examples
+
+```julia
+julia> parse(NCBIGene, "7157")
+NCBIGene:7157
+
+julia> parse(NCBIGene, "https://www.ncbi.nlm.nih.gov/gene/5594")
+NCBIGene:5594
+```
+"""
+@defid(NCBIGene <: BioIdentifier,
+       :id(digits(UInt32)),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/gene/")
+
+# NCBITaxon
+
+"""
+    NCBITaxon <: BioIdentifier
+
+NCBI Taxonomy species/strain identifier.
+
+The NCBI Taxonomy database contains the names of all organisms that are represented
+in the genetic databases with at least one nucleotide or protein sequence. The
+taxonomy database includes phylogenetic and taxonomic information for the organisms.
+Identifiers are positive integers. Parsing may throw a `MalformedIdentifier` if the format is invalid.
+
+# Examples
+
+```julia
+julia> parse(NCBITaxon, "9606")
+NCBITaxon:9606
+
+julia> parse(NCBITaxon, "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=10090")
+NCBITaxon:10090
+```
+"""
+@defid(NCBITaxon <: BioIdentifier,
+       :id(digits(UInt32)),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=")
+
+# OMIM
+
+"""
+    OMIM <: BioIdentifier
+
+An [OMIM](https://omim.org/) (Online Mendelian Inheritance in Man) entry identifier for genetic disorders and genes.
+
+Maintained by [Johns Hopkins University](https://www.jhu.edu/), OMIM is a
+continuously updated catalog of human genes and genetic disorders, with
+particular focus on the molecular relationship between genetic variation and
+phenotypic expression. Identifiers consist of 6 digits, optionally followed
+by a `.` and a 4-digit allelic variant suffix.
+
+# Examples
+
+```julia
+julia> parse(OMIM, "600918")
+OMIM:600918
+
+julia> parse(OMIM, "613659.0001")
+OMIM:613659.0001
+```
+"""
+@defid(OMIM <: BioIdentifier,
+       (:id(digits(6, pad=6)), optional(".", :suffix(digits(4, pad=4)))),
+       prefix="", purlprefix="https://omim.org/entry/")
+
+# PDB
+
+"""
+    PDB <: BioIdentifier
+
+A [Protein Data Bank](https://www.rcsb.org/) (PDB) structure identifier.
+
+Managed by the [Worldwide Protein Data Bank](https://www.wwpdb.org/) (wwPDB),
+the PDB is the single global archive of experimentally determined 3D structures
+of biological macromolecules. Identifiers are 4-character alphanumeric codes
+(digits and uppercase letters), with the first character always a digit.
+
+# Examples
+
+```julia
+julia> parse(PDB, "1A3N")
+PDB:1A3N
+
+julia> parse(PDB, "7QDH")
+PDB:7QDH
+```
+"""
+@defid(PDB <: BioIdentifier,
+       :id(alphnum(4, upper=true)),
+       prefix="", purlprefix="https://www.ebi.ac.uk/pdbe/entry/pdb/")
+
+# PubChem
+
+"""
+    PubChem <: BioIdentifier
+
+A [PubChem](https://pubchem.ncbi.nlm.nih.gov/) identifier for chemical compounds, substances, and bioassays.
+
+Operated by [NCBI](https://www.ncbi.nlm.nih.gov/), PubChem is the world's
+largest freely accessible chemical database, providing information on chemical
+structures, properties, biological activities, and safety data. Identifiers
+use a prefix indicating the record type — `CID` (compound), `SID`
+(substance), or `AID` (bioassay) followed by a positive integer.
+
+# Examples
+
+```julia
+julia> parse(PubChem, "CID2244")
+PubChem:CID2244
+
+julia> parse(PubChem, "SID12345678")
+PubChem:SID12345678
+```
+"""
+@defid(PubChem <: BioIdentifier,
+       choice(seq("CID", :id(digits(UInt32))),
+              seq("SID", :id(digits(UInt32))),
+              seq("AID", :id(digits(UInt32)))))
+
+function FastIdentifiers.purl(pc::PubChem)
+    sc = shortcode(pc)
+    type = if startswith(sc, "SID")
+        "substance"
+    elseif startswith(sc, "AID")
+        "assay"
+    else
+        "compound"
+    end
+    "https://pubchem.ncbi.nlm.nih.gov/" * type * "/" * sc[4:end]
 end
 
-@numericid HGNC url = "www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" prefix = "HGNC:" inttype = UInt32
+# PXD
 
+"""
+    PXD <: BioIdentifier
 
+A [ProteomeXchange](http://www.proteomexchange.org/) dataset identifier for mass spectrometry proteomics data.
 
-
+ProteomeXchange is a consortium providing a single point of submission for
+proteomics datasets to partner repositories (PRIDE, PeptideAtlas, MassIVE,
+jPOST). Both `PXD` (original) and `RPXD` (reprocessed) prefixes are
+accepted during parsing; the canonical output uses `PXD`. Identifiers
+consist of the prefix followed by 6 zero-padded digits.
+
+# Examples
+
+```julia
+julia> parse(PXD, "PXD000001")
+PXD:PXD000001
+
+julia> parse(PXD, "RPXD123456")
+PXD:PXD123456
+```
+"""
+@defid(PXD <: BioIdentifier,
+       (skip(choice("PXD", "RPXD"), print="PXD"), :id(digits(6, pad=6))),
+       prefix="", purlprefix="https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=")
+
+# Reactome
+
+"""
+    Reactome <: BioIdentifier
+
+A [Reactome](https://reactome.org/) curated biological pathway identifier.
+
+Reactome is a free, open-source, peer-reviewed pathway knowledgebase maintained
+by [OICR](https://oicr.on.ca/), [NYU Langone](https://nyulangone.org/), and
+[EMBL-EBI](https://www.ebi.ac.uk/). Identifiers follow the format
+`R-<species>-<number>`, where the 3-letter species code indicates the organism
+(e.g. `HSA` for human, `MMU` for mouse).
+
+# Examples
+
+```julia
+julia> parse(Reactome, "R-HSA-199420")
+Reactome:R-HSA-199420
+
+julia> parse(Reactome, "https://reactome.org/PathwayBrowser/#/R-MMU-123456")
+Reactome:R-MMU-123456
+```
+"""
+@defid(Reactome <: BioIdentifier,
+       ("R-", :species(letters(3, upper=true)), "-", :id(digits(UInt32))),
+       prefix="", purlprefix="https://reactome.org/PathwayBrowser/#/")
+
+# RefSeq
+
+"""
+    RefSeq <: BioIdentifier
+
+RefSeq curated reference sequence identifier.
+
+The Reference Sequence database is a comprehensive, integrated, non-redundant,
+well-annotated set of reference sequences including genomic, transcript, and
+protein sequences. Identifiers follow formats like `NM_<number>.<version>`,
+`NP_<number>.<version>`, etc. Parsing may throw a `MalformedIdentifier` if the format is invalid.
+
+# Examples
+
+```julia
+julia> parse(RefSeq, "NM_000546.6")
+RefSeq:NM_000546.6
+
+julia> parse(RefSeq, "NP_000537.3")
+RefSeq:NP_000537.3
+```
+"""
+@defid(RefSeq <: BioIdentifier,
+       (:prefix(choice("NM", "NP", "XM", "XP", "NR", "XR", "NG", "NT", "NW", "NC")),
+        "_", :id(digits(UInt32, pad=6)), ".", :ver(digits(1:2))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/nuccore/")
+
+# RRID
+
+"""
+    RRID <: BioIdentifier
+
+A [Research Resource Identifier](https://scicrunch.org/resources) (RRID) for research materials and tools.
+
+Managed by [SciCrunch](https://scicrunch.org/) and promoted by the
+[RRID Initiative](https://www.rrids.org/), RRIDs provide persistent unique
+identifiers for antibodies, cell lines, organisms, plasmids, software tools,
+and other research resources. They are designed to be cited in the methods
+sections of research articles for reproducibility. Identifiers follow the
+format `RRID:<provider>_<id>`, where the provider code indicates the source
+registry (e.g. `AB` for antibodies, `SCR` for software).
+
+# Examples
+
+```julia
+julia> parse(RRID, "RRID:AB_123456")
+RRID:AB_123456
+
+julia> parse(RRID, "https://scicrunch.org/resolver/RRID:AB_123456")
+RRID:AB_123456
+```
+"""
+@defid(RRID <: BioIdentifier,
+       (:prefix(charset(2:12, 'A':'Z', 'a':'z', upper=true)),
+        "_", :id(charset(3:12, 'A':'Z', 'a':'z', '0':'9', upper=true))),
+       prefix="RRID:", purlprefix="https://scicrunch.org/resolver/RRID:")
+
+# SO
+
+"""
+    SO <: BioIdentifier
+
+Sequence Ontology identifier.
+
+The Sequence Ontology is a structured controlled vocabulary for the parts of
+a biological sequence. SO terms are used extensively in variant annotation
+tools like VEP and SnpEff to describe sequence features and variant effects.
+Parsing may throw a `MalformedIdentifier` if the format is invalid.
+
+# Examples
+
+```julia
+julia> parse(SO, "SO:0001234")
+SO:0001234
+
+julia> parse(SO, "0000704")
+SO:0000704
+```
+"""
+@defid(SO <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="SO:", purlprefix="https://purl.obolibrary.org/obo/SO_")
+
+# SRA
+
+"""
+    SRA <: BioIdentifier
+
+An [SRA](https://www.ncbi.nlm.nih.gov/sra) (Sequence Read Archive) identifier for sequencing data.
+
+Operated by [NCBI](https://www.ncbi.nlm.nih.gov/), the Sequence Read Archive
+is the largest public repository of high-throughput sequencing data. Identifiers
+use a prefix indicating the record type — `SRR` (run), `SRX` (experiment),
+`SRS` (sample), or `SRP` (study) followed by digits.
+
+# Examples
+
+```julia
+julia> parse(SRA, "SRR123456")
+SRA:SRR123456
+
+julia> parse(SRA, "SRX789012")
+SRA:SRX789012
+```
+"""
+@defid(SRA <: BioIdentifier,
+       (:prefix(choice("SRR", "SRX", "SRS", "SRP")), :id(digits(1:18, pad=6))),
+       prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/sra/")
+
+# UniProt (must precede UniRef and AFDB which embed it)
+
+"""
+    UniProt <: BioIdentifier
+
+A [UniProt](https://www.uniprot.org/) (Universal Protein Resource) accession for protein sequences.
+
+Maintained by the [UniProt Consortium](https://www.uniprot.org/help/about)
+(EMBL-EBI, SIB, PIR), UniProt is the most comprehensive resource for protein
+sequence and functional annotation. Accessions come in two formats: 6-character
+Swiss-Prot entries (e.g. `P04637`) starting with O/P/Q, and 10-character
+TrEMBL entries (e.g. `A0A0G2JMC8`) starting with A–N or R–Z.
+
+# Examples
+
+```julia
+julia> parse(UniProt, "P04637")
+UniProt:P04637
+
+julia> parse(UniProt, "A0A0G2JMC8")
+UniProt:A0A0G2JMC8
+
+julia> parse(UniProt, "https://www.uniprot.org/uniprot/Q9Y6K5")
+UniProt:Q9Y6K5
+```
+"""
+@defid(UniProt <: BioIdentifier,
+       choice(seq(choice("O", "P", "Q"), :d1(digits(1)), :mid(alphnum(3, upper=true)), :d2(digits(1))),
+              seq(charset(1, 'A':'N', 'R':'Z', upper=true), :d1(digits(1)), :mid(alphnum(8, upper=true)))),
+       prefix="", purlprefix="https://www.uniprot.org/uniprot/")
+
+# UniRef
+
+"""
+    UniRef <: BioIdentifier
+
+UniProt Reference Clusters identifier.
+
+UniRef provides clustered sets of sequences from the UniProt Knowledgebase
+at 50%, 90%, and 100% sequence identity. These clusters are widely used
+by AlphaFold, MMseqs2, and other bioinformatics tools to reduce redundancy.
+Identifiers follow format UniRef<level>_<UniProt> where level is 50, 90, or 100.
+Parsing may throw a `MalformedIdentifier` if the format is invalid.
+
+# Examples
+
+```julia
+julia> parse(UniRef, "UniRef50_Q9Y6K5")
+UniRef:UniRef50_Q9Y6K5
+
+julia> parse(UniRef, "UniRef90_P69905")
+UniRef:UniRef90_P69905
+```
+"""
+@defid(UniRef <: BioIdentifier,
+       (:cluster(choice("UniRef50", "UniRef90", "UniRef100")),
+        "_", :member(embed(UniProt))),
+       prefix="", purlprefix="https://www.uniprot.org/uniref/")
+
+# AFDB
+
+"""
+    AFDB <: BioIdentifier
+
+AlphaFold Database identifier for predicted 3-D protein models.
+
+AlphaFold DB identifiers reference AI-predicted protein structures from DeepMind/EMBL-EBI.
+They follow the format `AF-<UniProt>-F<number>` where UniProt is a valid UniProt accession
+and the F-number represents the fragment/model number. Parsing may throw a `MalformedIdentifier`
+if the format is invalid.
+
+# Examples
+
+```julia
+julia> parse(AFDB, "AF-P69905-F1")
+AFDB:AF-P69905-F1
+
+julia> parse(AFDB, "https://alphafold.com/entry/AF-Q9Y6K5-F1")
+AFDB:AF-Q9Y6K5-F1
+```
+"""
+@defid(AFDB <: BioIdentifier,
+       ("AF-", :uniprot(embed(UniProt)), "-F", :fragment(digits(1:3))),
+       prefix="", purlprefix="https://alphafold.com/entry/")
+
+# WikiPathways
+
+"""
+    WikiPathways <: BioIdentifier
+
+A [WikiPathways](https://www.wikipathways.org/) community-curated biological pathway identifier.
+
+WikiPathways is an open, collaborative platform for biological pathway curation,
+widely used in pathway enrichment analysis tools such as
+[Cytoscape](https://cytoscape.org/) and [GSEA](https://www.gsea-msigdb.org/).
+Identifiers follow the format `WP` followed by 1–5 digits.
+
+# Examples
+
+```julia
+julia> parse(WikiPathways, "WP554")
+WikiPathways:WP554
+
+julia> purl(parse(WikiPathways, "WP554"))
+"https://www.wikipathways.org/instance/WP554"
+```
+"""
+@defid(WikiPathways <: BioIdentifier,
+       ("WP", :id(digits(1:5))),
+       prefix="", purlprefix="https://www.wikipathways.org/instance/")
+
+# ──────────────────────────────────────────────────────────────────
+# Hand-written types
+# ──────────────────────────────────────────────────────────────────
+
+# Ensembl
+
+@defid(GenericEnsembl <: BioIdentifier,
+       (choice(:kind,
+           :Gene         => "ENSG",
+           :Transcript   => "ENST",
+           :Protein      => "ENSP",
+           :Exon         => "ENSE",
+           :Regulatory   => "ENSR",
+           :Family       => "ENSF",
+           :FamilyMember => "ENSFM"),
+        :number(digits(11, pad=11)),
+        optional(".", :version(digits(max=65535)))),
+       purlprefix="https://www.ensembl.org/id/")
+
+"""
+    EnsemblIdentifier{T} <: BioIdentifier
+
+An [Ensembl](https://www.ensembl.org/) stable identifier for genome features.
+
+Maintained by [EMBL-EBI](https://www.ebi.ac.uk/) and the
+[Wellcome Sanger Institute](https://www.sanger.ac.uk/), Ensembl provides
+reference genome annotations for vertebrates and model organisms. Each
+feature type has a distinct prefix: `ENSG` (gene), `ENST` (transcript),
+`ENSP` (protein), `ENSE` (exon), `ENSR` (regulatory), `ENSF` (family),
+`ENSFM` (family member). Identifiers consist of the prefix followed by
+11 zero-padded digits, with an optional `.version` suffix.
+
+# Examples
+
+```julia
+julia> parse(ENSG, "ENSG00000141510")
+ENSG:ENSG00000141510
+
+julia> parse(ENST, "ENST00000269305.9")
+ENST:ENST00000269305.9
+
+julia> purl(parse(ENSG, "ENSG00000141510"))
+"https://www.ensembl.org/id/ENSG00000141510"
+```
+"""
+struct EnsemblIdentifier{T} <: BioIdentifier
+    inner::GenericEnsembl
+end
+
+const ENSG  = EnsemblIdentifier{:Gene}
+const ENST  = EnsemblIdentifier{:Transcript}
+const ENSP  = EnsemblIdentifier{:Protein}
+const ENSE  = EnsemblIdentifier{:Exon}
+const ENSR  = EnsemblIdentifier{:Regulatory}
+const ENSF  = EnsemblIdentifier{:Family}
+const ENSFM = EnsemblIdentifier{:FamilyMember}
+
+EnsemblIdentifier{T}(number::Integer) where {T} =
+    EnsemblIdentifier{T}(GenericEnsembl(T, number))
+EnsemblIdentifier{T}(number::Integer, version::Integer) where {T} =
+    EnsemblIdentifier{T}(GenericEnsembl(T, number, version))
+
+function Base.parse(::Type{EnsemblIdentifier{kind}}, id::AbstractString) where {kind}
+    inner = parse(GenericEnsembl, id)
+    inner.kind == kind ||
+        throw(MalformedIdentifier{EnsemblIdentifier{kind}}(id, 1, "expected $(kind) prefix"))
+    EnsemblIdentifier{kind}(inner)
+end
+
+function Base.parse(::Type{EnsemblIdentifier}, id::AbstractString)
+    inner = parse(GenericEnsembl, id)
+    EnsemblIdentifier{inner.kind}(inner)
+end
+
+function Base.tryparse(::Type{EnsemblIdentifier{kind}}, id::AbstractString) where {kind}
+    inner = tryparse(GenericEnsembl, id)
+    isnothing(inner) && return nothing
+    inner.kind == kind || return nothing
+    EnsemblIdentifier{kind}(inner)
+end
+
+function Base.tryparse(::Type{EnsemblIdentifier}, id::AbstractString)
+    inner = tryparse(GenericEnsembl, id)
+    isnothing(inner) && return nothing
+    EnsemblIdentifier{inner.kind}(inner)
+end
+
+function Base.show(io::IO, @nospecialize(ens::EnsemblIdentifier))
+    if get(io, :limit, false) === true
+        if get(io, :typeinfo, Nothing) != typeof(ens)
+            print(io, nameof(typeof(ens)), ':')
+        end
+        shortcode(io, ens)
+    else
+        show(io, typeof(ens))
+        print(io, '(', ens.inner.number)
+        isnothing(ens.inner.version) || print(io, ", ", ens.inner.version)
+        print(io, ')')
+    end
+end
+
+Base.isless(@nospecialize(a::EnsemblIdentifier), @nospecialize(b::EnsemblIdentifier)) = isless(a.inner, b.inner)
+Base.write(io::IO, @nospecialize(id::EnsemblIdentifier)) = write(io, id.inner)
+Base.string(@nospecialize(id::EnsemblIdentifier)) = shortcode(id)
+shortcode(io::IO, @nospecialize(id::EnsemblIdentifier)) = shortcode(io, id.inner)
+shortcode(@nospecialize(id::EnsemblIdentifier)) = shortcode(id.inner)
+purlprefix(@nospecialize(_::Type{<:EnsemblIdentifier})) = purlprefix(GenericEnsembl)
+idcode(@nospecialize(ens::EnsemblIdentifier)) = ens.inner.number
+
 # INSDC
 
 """
@@ -1203,21 +1415,21 @@ const INSDC_PREFIXES = [
     "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ"
 ]
 
-function parseid(::Type{INSDC}, id::SubString)
+function Base.parse(::Type{INSDC}, id::AbstractString)
+    id = SubString(string(id))
     _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/nuccore/", "ncbi.nlm.nih.gov/nuccore/", "www.ebi.ac.uk/ena/browser/view/", "ebi.ac.uk/ena/browser/view/")
-
     # Extract version if present
     base_id, version = if contains(id, '.')
         parts = split(id, '.', limit=2)
+        dotpos = findfirst('.', id)
         version_str = parts[2]
-        isempty(version_str) && return MalformedIdentifier{INSDC}(id, "version cannot be empty after period")
-        parsed_version = parsefor(INSDC, UInt16, version_str)
-        parsed_version isa UInt16 || return parsed_version
+        isempty(version_str) && throw(MalformedIdentifier{INSDC}(id, dotpos + 1, "version cannot be empty after period"))
+        parsed_version = tryparse(UInt16, version_str)
+        isnothing(parsed_version) && throw(MalformedIdentifier{INSDC}(id, dotpos + 1, "must contain only digits"))
         parts[1], parsed_version
     else
         id, nothing
     end
-
     # Find matching prefix
     prefix_match = nothing
     for prefix in INSDC_PREFIXES
@@ -1229,14 +1441,15 @@ function parseid(::Type{INSDC}, id::SubString)
             end
         end
     end
-
-    prefix_match === nothing && return MalformedIdentifier{INSDC}(id, "must start with valid INSDC prefix followed by digits")
-
+    prefix_match === nothing && throw(MalformedIdentifier{INSDC}(id, 1, "must start with valid INSDC prefix followed by digits"))
     remainder = base_id[length(prefix_match)+1:end]
-    num = parsefor(INSDC, UInt64, remainder)
-    num isa UInt64 || return num
-
+    num = tryparse(UInt64, remainder)
+    isnothing(num) && throw(MalformedIdentifier{INSDC}(id, length(prefix_match) + 1, "must contain only digits"))
     INSDC(SubString(prefix_match), num, version)
+end
+
+function Base.tryparse(::Type{INSDC}, id::AbstractString)
+    try parse(INSDC, id) catch e; e isa MalformedIdentifier || rethrow(); nothing end
 end
 
 purlprefix(::Type{INSDC}) = "https://www.ncbi.nlm.nih.gov/nuccore/"
@@ -1248,1016 +1461,332 @@ end
 
 idcode(insdc::INSDC) = insdc.number
 
-Base.show(io::IO, insdc::INSDC) = (show(io, INSDC); show(io, (insdc.prefix, insdc.number, insdc.version)))
+function Base.show(io::IO, insdc::INSDC)
+    show(io, INSDC)
+    show(io, (insdc.prefix, insdc.number, insdc.version))
+end
+
+function Base.print(io::IO, insdc::INSDC)
+    get(io, :limit, false) === true && get(io, :compact, false) === true ||
+        print(io, "INSDC:")
+    print(io, shortcode(insdc))
+end
 
 
-# HMDB
+## DrugBank
 
 """
-    HMDB <: BioIdentifier
+    DrugBank <: BioIdentifier
 
-Human Metabolome Database entry identifier.
+A [DrugBank](https://go.drugbank.com/) identifier for drug and pharmaceutical compound entries.
 
-The Human Metabolome Database contains detailed information about small molecule
-metabolites found in the human body. It is intended to be used for applications
-in metabolomics, clinical chemistry, and general biomarker discovery. Identifiers
-follow format `HMDB<7 digits>`. Parsing may throw a `MalformedIdentifier` if the format is invalid.
+DrugBank combines detailed pharmacological data with drug target information,
+providing a resource for drug discovery, pharmacology research, and clinical
+decision support. Identifiers follow the format `DB` followed by 5 zero-padded
+digits.
 
 # Examples
 
 ```julia
-julia> parse(HMDB, "HMDB0000001")
-HMDB:HMDB0000001
+julia> parse(DrugBank, "DB00945")
+DrugBank:DB00945
 
-julia> parse(HMDB, "https://hmdb.ca/metabolites/HMDB0123456")
-HMDB:HMDB0123456
+julia> purl(parse(DrugBank, "DB00945"))
+"https://go.drugbank.com/drugs/DB00945"
 ```
 """
-struct HMDB <: BioIdentifier
-    id::UInt32
-end
-
-@numericid HMDB url = "hmdb.ca/metabolites/" prefix = "HMDB" digits = 7 inttype = UInt32
-
-function parseid(::Type{HMDB}, id::SubString)
-    _, id = chopprefixes(id, "hmdb.ca/metabolites/")
-    found, remainder = chopprefixes(id, "hmdb")
-    found || return MalformedIdentifier{HMDB}(id, "must start with 'HMDB'")
-    length(remainder) == 7 && all(isdigit, remainder) || return MalformedIdentifier{HMDB}(id, "must have exactly 7 digits after 'HMDB'")
-    num = parsefor(HMDB, UInt32, remainder)
-    num isa UInt32 || return num
-    HMDB(num)
-end
-
+@defid(DrugBank <: BioIdentifier,
+       ("DB", :id(digits(5, pad=5))),
+       prefix="", purlprefix="https://go.drugbank.com/drugs/")
 
 
-# HPO
+## GWAS
 
 """
-    HPO <: BioIdentifier
+    GWAS <: BioIdentifier
 
-Human Phenotype Ontology term identifier.
-
-The Human Phenotype Ontology provides a standardized vocabulary of phenotypic
-abnormalities encountered in human disease. Each term describes a phenotypic
-feature of human disease. Identifiers follow format `HP:<7 digits>`. Parsing may
-throw a `MalformedIdentifier` if the format is invalid.
+NHGRI-EBI GWAS Catalog study accession. The GWAS Catalog provides a curated
+collection of published genome-wide association studies, their SNP-trait
+associations, and supporting metadata. Identifiers follow the format `GCST`
+followed by 1–8 digits.
 
 # Examples
 
 ```julia
-julia> parse(HPO, "HP:0000001")
-HPO:HP:0000001
+julia> parse(GWAS, "GCST90000001")
+GWAS:GCST90000001
 
-julia> parse(HPO, "0000001")
-HPO:HP:0000001
+julia> purl(parse(GWAS, "GCST90000001"))
+"https://www.ebi.ac.uk/gwas/studies/GCST90000001"
 ```
 """
-struct HPO <: BioIdentifier
-    id::UInt32
-end
-
-function parseid(::Type{HPO}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "purl.obolibrary.org/obo/HP_", "HP:")
-    all(isdigit, id) && length(id) == 7 || return MalformedIdentifier{HPO}(id, "must be 7 digits (optionally prefixed with HP:)")
-    num = parsefor(HPO, UInt32, id)
-    num isa UInt32 || return num
-    HPO(num)
-end
-
-function purl(hpo::HPO)
-    digits = lpad(hpo.id, 7, '0')
-    "https://purl.obolibrary.org/obo/HP_$(digits)"
-end
-
-shortcode(hpo::HPO) = string("HP:", lpad(hpo.id, 7, '0'))
-idcode(hpo::HPO) = hpo.id
+@defid(GWAS <: BioIdentifier,
+       ("GCST", :id(digits(1:8))),
+       prefix="", purlprefix="https://www.ebi.ac.uk/gwas/studies/")
 
 
-# IntAct
+## MP
 
 """
-    IntAct <: BioIdentifier
+    MP <: BioIdentifier
 
-IntAct protein interaction record identifier (EBI).
-
-IntAct provides a freely available, open source database system and analysis tools
-for molecular interaction data. All interactions are derived from literature curation
-or direct user submissions. Identifiers follow format `EBI-<number>`. Parsing may
-throw a `MalformedIdentifier` if the format is invalid.
+Mammalian Phenotype Ontology (MP) term identifier. The MP ontology provides a
+structured vocabulary for annotating mammalian phenotypes observed in gene
+knockout experiments, QTL studies, and spontaneous mutations. It is a core
+ontology used by the Mouse Genome Database (MGD) and the International Mouse
+Phenotyping Consortium (IMPC). Identifiers follow the format `MP:` followed
+by 7 zero-padded digits.
 
 # Examples
 
 ```julia
-julia> parse(IntAct, "EBI-123456")
-IntAct:EBI-123456
+julia> parse(MP, "MP:0000001")
+MP:0000001
 
-julia> parse(IntAct, "https://www.ebi.ac.uk/intact/interaction/EBI-789012")
-IntAct:EBI-789012
+julia> purl(parse(MP, "MP:0000001"))
+"https://purl.obolibrary.org/obo/MP_0000001"
 ```
 """
-struct IntAct <: BioIdentifier
-    id::UInt32
-end
-
-@numericid IntAct url = "www.ebi.ac.uk/intact/interaction/" prefix = "EBI-" inttype = UInt32
-
-
-
+@defid(MP <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="MP:", purlprefix="https://purl.obolibrary.org/obo/MP_")
 
 
-# KEGG
+## PATO
 
 """
-    KEGG <: BioIdentifier
+    PATO <: BioIdentifier
 
-KEGG pathway map identifier.
-
-KEGG is a database resource for understanding high-level functions and utilities
-of the biological system from molecular-level information. Pathway maps provide
-graphical representations of cellular processes. Identifiers follow format
-`<3-4 letters><5 digits>`. Parsing may throw a `MalformedIdentifier` if the format is invalid.
+Phenotype And Trait Ontology (PATO) term identifier. PATO provides a
+structured vocabulary for describing phenotypic qualities such as shape,
+size, colour, and mass. It is used as a building block by other phenotype
+ontologies (including HPO and MP) to compose precise phenotype descriptions.
+Identifiers follow the format `PATO:` followed by 7 zero-padded digits.
 
 # Examples
 
 ```julia
-julia> parse(KEGG, "hsa00010")
-KEGG:hsa00010
+julia> parse(PATO, "PATO:0000001")
+PATO:0000001
 
-julia> parse(KEGG, "https://www.kegg.jp/entry/mmu04210")
-KEGG:mmu04210
+julia> purl(parse(PATO, "PATO:0000001"))
+"https://purl.obolibrary.org/obo/PATO_0000001"
 ```
 """
-struct KEGG <: BioIdentifier
-    species::UInt32  # Encoded 3-4 letter species code
-    pathway::UInt32  # 5-digit pathway number
-end
-
-function parseid(::Type{KEGG}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.kegg.jp/entry/", "kegg.jp/entry/")
-    (8 <= length(id) <= 9) || return MalformedIdentifier{KEGG}(id, "must be 3-4 lowercase letters followed by 5 digits")
-    letter_part = id[1:end-5]
-    digit_part = id[end-4:end]
-    (3 <= length(letter_part) <= 4) && all(c -> islowercase(c) && isletter(c), letter_part) || return MalformedIdentifier{KEGG}(id, "first part must be 3-4 lowercase letters")
-    length(digit_part) == 5 && all(isdigit, digit_part) || return MalformedIdentifier{KEGG}(id, "last part must be exactly 5 digits")
-    # Encode 3-4 letter species code as UInt32 using ASCII
-    species_code = UInt32(0)
-    for (i, c) in enumerate(codeunits(letter_part))
-        species_code |= UInt32(c) << (8 * (4 - i))  # Pack ASCII values into 8-bit slots
-    end
-    pathway = parsefor(KEGG, UInt32, digit_part)
-    pathway isa UInt32 || return pathway
-    KEGG(species_code, pathway)
-end
-
-purlprefix(::Type{KEGG}) = "https://www.kegg.jp/entry/"
-function shortcode(kegg::KEGG)
-    # Decode species code from UInt32
-    species_bytes = Vector{UInt8}(undef, 4)
-    temp = kegg.species
-    len = 0
-    for i in 1:4
-        byte = (temp >> (8 * (4 - i))) & 0xff
-        byte == 0 && break
-        species_bytes[i] = byte
-        len = i
-    end
-    string(String(resize!(species_bytes, len)), lpad(kegg.pathway, 5, '0'))
-end
-idcode(kegg::KEGG) = kegg.pathway
-
-Base.show(io::IO, kegg::KEGG) = (show(io, KEGG); show(io, (kegg.species, kegg.pathway)))
+@defid(PATO <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="PATO:", purlprefix="https://purl.obolibrary.org/obo/PATO_")
 
 
-# MetaboLights
+## UBERON
 
 """
-    MetaboLights <: BioIdentifier
+    UBERON <: BioIdentifier
 
-MetaboLights metabolomics study archive identifier.
-
-MetaboLights is a database for metabolomics experiments and derived information.
-The database supports the public dissemination of metabolomics data in support
-of the scientific endeavor. Identifiers follow format `MTBLS<number>`. Parsing may
-throw a `MalformedIdentifier` if the format is invalid.
+Uber-anatomy ontology (UBERON) cross-species anatomical structure identifier.
+UBERON is an integrated ontology covering anatomical structures in animals,
+bridging species-specific anatomy ontologies to enable comparative analyses.
+It is widely used in multi-species phenotype annotation and gene expression
+studies. Identifiers follow the format `UBERON:` followed by 7 zero-padded
+digits.
 
 # Examples
 
 ```julia
-julia> parse(MetaboLights, "MTBLS1")
-MetaboLights:MTBLS1
+julia> parse(UBERON, "UBERON:0000001")
+UBERON:0000001
 
-julia> parse(MetaboLights, "https://www.ebi.ac.uk/metabolights/MTBLS123")
-MetaboLights:MTBLS123
+julia> purl(parse(UBERON, "UBERON:0000001"))
+"https://purl.obolibrary.org/obo/UBERON_0000001"
 ```
 """
-struct MetaboLights <: BioIdentifier
-    id::UInt32
-end
-
-@numericid MetaboLights url = "www.ebi.ac.uk/metabolights/" prefix = "MTBLS" inttype = UInt32
-
-
-
+@defid(UBERON <: BioIdentifier,
+       :id(digits(7, pad=7)),
+       prefix="UBERON:", purlprefix="https://purl.obolibrary.org/obo/UBERON_")
 
 
-# MONDO
+## MeSH
 
 """
-    MONDO <: BioIdentifier
+    MeSH <: BioIdentifier
 
-Monarch Disease Ontology unified disease identifier.
+Medical Subject Headings descriptor or supplementary concept identifier.
 
-The Monarch Disease Ontology aims to harmonize disease definitions across the world.
-It is a semi-automatically constructed ontology that merges in multiple disease
-resources to yield a coherent merged ontology. Identifiers follow format `MONDO:<number>`.
-Parsing may throw a `MalformedIdentifier` if the format is invalid.
+MeSH is the NLM's controlled vocabulary for indexing PubMed and MEDLINE
+literature. Descriptor IDs use a `D` prefix followed by 6-9 digits;
+supplementary concept IDs use a `C` prefix.
 
 # Examples
 
 ```julia
-julia> parse(MONDO, "MONDO:0000001")
-MONDO:MONDO:0000001
+julia> parse(MeSH, "D001249")
+MeSH:D001249
 
-julia> parse(MONDO, "0000001")
-MONDO:MONDO:0000001
+julia> parse(MeSH, "C000657245")
+MeSH:C657245
 ```
 """
-struct MONDO <: BioIdentifier
-    id::UInt32
-end
-
-@numericid MONDO url = "purl.obolibrary.org/obo/MONDO_" prefix = "MONDO:" digits = 7 inttype = UInt32
-
-function purl(mondo::MONDO)
-    digits = lpad(mondo.id, 7, '0')
-    "https://purl.obolibrary.org/obo/MONDO_$(digits)"
-end
-
+@defid(MeSH <: BioIdentifier,
+       (choice("D", "C"), :id(digits(6:9, pad=6))),
+       prefix="", purlprefix="https://meshb.nlm.nih.gov/record/ui?ui=")
 
 
-# NCBIGene
+## InterPro
 
 """
-    NCBIGene <: BioIdentifier
+    InterPro <: BioIdentifier
 
-NCBI Entrez Gene numeric primary key.
+An [InterPro](https://www.ebi.ac.uk/interpro/) protein family and domain identifier.
 
-Entrez Gene provides a unified query environment for genes defined by sequence
-and/or in Map Viewer. Records include nomenclature, Reference Sequences,
-maps, pathways, variations, phenotypes, and links to genome, phenotype, and
-locus-specific resources. Identifiers are positive integers (≤ 10 digits).
-Parsing may throw a `MalformedIdentifier` if the format is invalid.
+Maintained by [EMBL-EBI](https://www.ebi.ac.uk/), InterPro integrates protein
+signatures from Pfam, PRINTS, PROSITE, SMART, and other member databases into
+a single classification resource. Identifiers have the format `IPR` followed
+by 6 zero-padded digits.
 
 # Examples
 
 ```julia
-julia> parse(NCBIGene, "7157")
-NCBIGene:7157
+julia> parse(InterPro, "IPR011009")
+InterPro:IPR011009
 
-julia> parse(NCBIGene, "https://www.ncbi.nlm.nih.gov/gene/5594")
-NCBIGene:5594
+julia> purl(parse(InterPro, "IPR011009"))
+"https://www.ebi.ac.uk/interpro/entry/InterPro/IPR011009"
 ```
 """
-struct NCBIGene <: BioIdentifier
-    id::UInt32
-end
-
-@numericid NCBIGene url = "www.ncbi.nlm.nih.gov/gene/" inttype = UInt32
-
-function parseid(::Type{NCBIGene}, id::SubString)
-    _, id = chopprefixes(id, "www.ncbi.nlm.nih.gov/gene/", "ncbi.nlm.nih.gov/gene/")
-    length(id) <= 10 && all(isdigit, id) && !isempty(id) || return MalformedIdentifier{NCBIGene}(id, "must be a positive integer with ≤ 10 digits")
-    number = parsefor(NCBIGene, UInt32, id)
-    number isa UInt32 || return number
-    number == 0 && return MalformedIdentifier{NCBIGene}(id, "must be a positive integer")
-    NCBIGene(number)
-end
-
+@defid(InterPro <: BioIdentifier,
+       ("IPR", :id(digits(6, pad=6))),
+       prefix="", purlprefix="https://www.ebi.ac.uk/interpro/entry/InterPro/")
 
 
-# NCBITaxon
+## Pfam
 
 """
-    NCBITaxon <: BioIdentifier
+    Pfam <: BioIdentifier
 
-NCBI Taxonomy species/strain identifier.
+A [Pfam](https://www.ebi.ac.uk/interpro/entry/pfam/) protein family identifier.
 
-The NCBI Taxonomy database contains the names of all organisms that are represented
-in the genetic databases with at least one nucleotide or protein sequence. The
-taxonomy database includes phylogenetic and taxonomic information for the organisms.
-Identifiers are positive integers. Parsing may throw a `MalformedIdentifier` if the format is invalid.
+Originally developed at the Sanger Institute and now hosted by
+[EMBL-EBI](https://www.ebi.ac.uk/) as part of [`InterPro`](@ref), Pfam
+classifies protein sequences into families and domains using hidden Markov
+model profiles. Identifiers have the format `PF` followed by 5 zero-padded
+digits.
 
 # Examples
 
 ```julia
-julia> parse(NCBITaxon, "9606")
-NCBITaxon:9606
+julia> parse(Pfam, "PF00069")
+Pfam:PF00069
 
-julia> parse(NCBITaxon, "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=10090")
-NCBITaxon:10090
+julia> purl(parse(Pfam, "PF00069"))
+"https://www.ebi.ac.uk/interpro/entry/pfam/PF00069"
 ```
 """
-struct NCBITaxon <: BioIdentifier
-    id::UInt32
-end
-
-@numericid NCBITaxon url = ["www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=", "taxon:"] inttype = UInt32
-
+@defid(Pfam <: BioIdentifier,
+       ("PF", :id(digits(5, pad=5))),
+       prefix="", purlprefix="https://www.ebi.ac.uk/interpro/entry/pfam/")
 
 
-# OMIM
+## MGI (Mouse Genome Informatics)
 
 """
-    OMIM <: BioIdentifier
+    MGI <: BioIdentifier
 
-Online Mendelian Inheritance in Man disorder/gene entry identifier.
+Mouse Genome Informatics gene identifier. MGI is the authoritative
+resource for the laboratory mouse genome, maintained by the Jackson
+Laboratory. A founding member of the Alliance of Genome Resources.
 
-OMIM is a continuously updated catalog of human genes and genetic disorders and
-traits, with a particular focus on the molecular relationship between genetic
-variation and phenotypic expression. Identifiers follow format `<6 digits>`
-optionally with `.<4 digits>` suffix. Parsing may throw a `MalformedIdentifier`
-if the format is invalid.
+Format: `MGI:` followed by 1–7 digits.
 
 # Examples
 
 ```julia
-julia> parse(OMIM, "600918")
-OMIM:600918
+julia> parse(MGI, "MGI:96417")
+MGI:96417
 
-julia> parse(OMIM, "613659.0001")
-OMIM:613659.0001
+julia> purl(parse(MGI, "MGI:96417"))
+"https://www.informatics.jax.org/marker/MGI:96417"
 ```
 """
-struct OMIM <: BioIdentifier
-    main::UInt32
-    suffix::Union{UInt16,Nothing}
-end
-
-function parseid(::Type{OMIM}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "omim.org/entry/")
-    suffix = nothing
-    if contains(id, ".")
-        parts = split(id, ".")
-        length(parts) == 2 || return MalformedIdentifier{OMIM}(id, "invalid format")
-        id, suffix_str = parts
-        length(suffix_str) == 4 && all(isdigit, suffix_str) || return MalformedIdentifier{OMIM}(id, "suffix must be exactly 4 digits")
-        suffix_num = parsefor(OMIM, UInt16, suffix_str)
-        suffix_num isa UInt16 || return suffix_num
-        suffix = suffix_num
-    end
-    length(id) == 6 && all(isdigit, id) || return MalformedIdentifier{OMIM}(id, "main identifier must be exactly 6 digits")
-    main_num = parsefor(OMIM, UInt32, id)
-    main_num isa UInt32 || return main_num
-    OMIM(main_num, suffix)
-end
-
-purlprefix(::Type{OMIM}) = "https://omim.org/entry/"
-shortcode(omim::OMIM) = isnothing(omim.suffix) ? string(lpad(omim.main, 6, '0')) : "$(lpad(omim.main, 6, '0')).$(lpad(omim.suffix, 4, '0'))"
-idcode(omim::OMIM) = omim.main
-
-Base.show(io::IO, omim::OMIM) = (show(io, OMIM); show(io, (omim.main, omim.suffix)))
+@defid(MGI <: BioIdentifier,
+       :id(digits(1:7)),
+       prefix="MGI:", purlprefix="https://www.informatics.jax.org/marker/MGI:")
 
 
-# PDB
+## SGD (Saccharomyces Genome Database)
 
 """
-    PDB <: BioIdentifier
+    SGD <: BioIdentifier
 
-Protein Data Bank structure identifier.
+Saccharomyces Genome Database gene identifier. SGD is the authoritative
+resource for the budding yeast *Saccharomyces cerevisiae* genome. A
+founding member of the Alliance of Genome Resources.
 
-The Protein Data Bank is the single worldwide archive of structural data
-of biological macromolecules. Identifiers are 4-character alphanumeric codes
-(digits and uppercase letters). Parsing may throw a `MalformedIdentifier`
-if the format is invalid.
+Format: `S` followed by 9 zero-padded digits (database identifier form).
+
+Note: SGD also uses systematic ORF names (e.g. `YAL001C`) in publications,
+but this type represents the stable database identifier.
 
 # Examples
 
 ```julia
-julia> parse(PDB, "1A3N")
-PDB:1A3N
-
-julia> parse(PDB, "7QDH")
-PDB:7QDH
+julia> parse(SGD, "S000002493")
+SGD:S000002493
 ```
 """
-struct PDB <: BioIdentifier
-    id::SubString{String}
-end
-
-function parseid(::Type{PDB}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ebi.ac.uk/pdbe/entry/pdb/", "ebi.ac.uk/pdbe/entry/pdb/", "www.rcsb.org/structure/", "rcsb.org/structure/")
-    length(id) == 4 || return MalformedIdentifier{PDB}(id, "must be exactly 4 characters")
-    all(c -> isdigit(c) || (isuppercase(c) && isletter(c)), id) || return MalformedIdentifier{PDB}(id, "must contain only digits and uppercase letters")
-    PDB(id)
-end
-
-purlprefix(::Type{PDB}) = "https://www.ebi.ac.uk/pdbe/entry/pdb/"
-shortcode(pdb::PDB) = pdb.id
-idcode(pdb::PDB) = pdb.id
-
-Base.show(io::IO, pdb::PDB) = (show(io, PDB); print(io, ':', pdb.id))
+@defid(SGD <: BioIdentifier,
+       ("S", :id(digits(9, pad=9))),
+       prefix="", purlprefix="https://www.yeastgenome.org/locus/")
 
 
-# PubChem
+## FlyBase
 
 """
-    PubChem <: BioIdentifier
+    FlyBase <: BioIdentifier
 
-PubChem database identifier for chemical compounds, substances, and assays.
+A [FlyBase](https://flybase.org/) gene identifier for *Drosophila* species.
 
-PubChem is the largest freely accessible chemical database, providing information
-on chemical structures, properties, and biological activities. Identifiers
-follow formats CID<number>, SID<number>, or AID<number> for compounds,
-substances, and assays respectively. Parsing may throw a `MalformedIdentifier`
-if the format is invalid.
+FlyBase is the primary database for *Drosophila* genetics and genomics,
+and a founding member of the [Alliance of Genome Resources](https://www.alliancegenome.org/).
+Gene identifiers have the format `FBgn` followed by 7 zero-padded digits.
 
 # Examples
 
 ```julia
-julia> parse(PubChem, "2244")
-PubChem:CID:2244
+julia> parse(FlyBase, "FBgn0031701")
+FlyBase:FBgn0031701
 
-julia> parse(PubChem, "SID12345678")
-PubChem:SID:12345678
+julia> purl(parse(FlyBase, "FBgn0031701"))
+"https://flybase.org/reports/FBgn0031701"
 ```
 """
-struct PubChem <: BioIdentifier
-    type::UInt8  # 1=CID, 2=SID, 3=AID
-    number::UInt64
-end
-
-const PUBCHEM_TYPES = ("CID", "SID", "AID")
-
-function parseid(::Type{PubChem}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "pubchem.ncbi.nlm.nih.gov/compound/", "pubchem.ncbi.nlm.nih.gov/substance/", "pubchem.ncbi.nlm.nih.gov/assay/")
-
-    for (i, prefix) in enumerate(PUBCHEM_TYPES)
-        if startswith(id, prefix)
-            remainder = id[length(prefix)+1:end]
-            all(isdigit, remainder) || return MalformedIdentifier{PubChem}(id, "$(prefix) must contain only digits after prefix")
-            isempty(remainder) && return MalformedIdentifier{PubChem}(id, "must have a number after $(prefix)")
-            num = parsefor(PubChem, UInt64, remainder)
-            num isa UInt64 || return num
-            num == 0 && return MalformedIdentifier{PubChem}(id, "number must be positive")
-            return PubChem(UInt8(i), num)
-        end
-    end
-
-    # Default to CID (just digits)
-    all(isdigit, id) || return MalformedIdentifier{PubChem}(id, "CID must contain only digits")
-    isempty(id) && return MalformedIdentifier{PubChem}(id, "cannot be empty")
-    num = parsefor(PubChem, UInt64, id)
-    num isa UInt64 || return num
-    num == 0 && return MalformedIdentifier{PubChem}(id, "number must be positive")
-    PubChem(UInt8(1), num)
-end
-
-function purl(pubchem::PubChem)
-    type_name = lowercase(PUBCHEM_TYPES[pubchem.type])
-    "https://pubchem.ncbi.nlm.nih.gov/$(type_name)/$(pubchem.number)"
-end
-
-function shortcode(pubchem::PubChem)
-    pubchem.type == 1 ? string(pubchem.number) : "$(PUBCHEM_TYPES[pubchem.type])$(pubchem.number)"
-end
-
-idcode(pubchem::PubChem) = pubchem.number
-
-Base.show(io::IO, pubchem::PubChem) = (show(io, PubChem); print(io, ':', PUBCHEM_TYPES[pubchem.type], ':', pubchem.number))
+@defid(FlyBase <: BioIdentifier,
+       ("FBgn", :id(digits(7, pad=7))),
+       prefix="", purlprefix="https://flybase.org/reports/")
 
 
-# PXD
+## WormBase
 
 """
-    PXD <: BioIdentifier
+    WormBase <: BioIdentifier
 
-ProteomeXchange public mass spectrometry dataset identifier.
+A [WormBase](https://wormbase.org/) gene identifier for *Caenorhabditis elegans* and related nematodes.
 
-ProteomeXchange provides a single point of submission of mass spectrometry
-proteomics data to the main existing proteomics repositories, and a unified
-identifier space. Identifiers follow formats PXD/RPXD<6 digits> for original/
-re-processed datasets respectively. Parsing may throw a `MalformedIdentifier`
-if the format is invalid.
+WormBase is the central resource for nematode biology, and a founding member
+of the [Alliance of Genome Resources](https://www.alliancegenome.org/). Gene
+identifiers have the format `WBGene` followed by 8 zero-padded digits.
 
 # Examples
 
 ```julia
-julia> parse(PXD, "PXD000001")
-PXD:PXD000001
+julia> parse(WormBase, "WBGene00006763")
+WormBase:WBGene00006763
 
-julia> parse(PXD, "RPXD123456")
-PXD:RPXD123456
+julia> purl(parse(WormBase, "WBGene00006763"))
+"https://wormbase.org/species/c_elegans/gene/WBGene00006763"
 ```
 """
-struct PXD <: BioIdentifier
-    reprocessed::Bool  # false=PXD, true=RPXD
-    number::UInt32
-end
-
-function parseid(::Type{PXD}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "proteomecentral.proteomexchange.org/cgi/GetDataset?ID=")
-    found_rpxd, remainder_rpxd = chopprefixes(id, "rpxd")
-    if found_rpxd
-        length(remainder_rpxd) == 6 && all(isdigit, remainder_rpxd) || return MalformedIdentifier{PXD}(id, "must have exactly 6 digits after prefix")
-        num = parsefor(PXD, UInt32, remainder_rpxd)
-        num isa UInt32 || return num
-        return PXD(true, num)
-    end
-    found_pxd, remainder_pxd = chopprefixes(id, "pxd")
-    if found_pxd
-        length(remainder_pxd) == 6 && all(isdigit, remainder_pxd) || return MalformedIdentifier{PXD}(id, "must have exactly 6 digits after prefix")
-        num = parsefor(PXD, UInt32, remainder_pxd)
-        num isa UInt32 || return num
-        return PXD(false, num)
-    end
-    return MalformedIdentifier{PXD}(id, "must start with PXD or RPXD")
-end
-
-function purl(pxd::PXD)
-    id = shortcode(pxd)
-    "https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=$(id)"
-end
-
-shortcode(pxd::PXD) = string(pxd.reprocessed ? "RPXD" : "PXD", lpad(pxd.number, 6, '0'))
-idcode(pxd::PXD) = pxd.number
-
-Base.show(io::IO, pxd::PXD) = (show(io, PXD); show(io, (pxd.reprocessed ? "RPXD" : "PXD", pxd.number)))
-
-
-# Reactome
-
-"""
-    Reactome <: BioIdentifier
-
-Reactome manually curated pathway identifier.
-
-Reactome is a free, open-source, curated and peer-reviewed pathway database.
-The goal is to provide intuitive bioinformatics tools for the visualization,
-interpretation and analysis of pathway knowledge. Identifiers follow format
-`R-<3 letters>-<number>`. Parsing may throw a `MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(Reactome, "R-HSA-199420")
-Reactome:R-HSA-199420
-
-julia> parse(Reactome, "https://reactome.org/PathwayBrowser/#/R-MMU-123456")
-Reactome:R-MMU-123456
-```
-"""
-struct Reactome <: BioIdentifier
-    species::UInt32  # Encoded 3-letter species code (24 bits)
-    number::UInt32
-end
-
-function parseid(::Type{Reactome}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "reactome.org/PathwayBrowser/#/")
-    found, remainder = chopprefixes(id, "r-")
-    found || return MalformedIdentifier{Reactome}(id, "must start with 'R-'")
-    parts = split(remainder, '-')
-    length(parts) == 2 || return MalformedIdentifier{Reactome}(id, "must follow format R-<species>-<number>")
-    species_str = SubString(string(parts[1]))
-    number_str = parts[2]
-    length(species_str) == 3 || return MalformedIdentifier{Reactome}(id, "species code must be exactly 3 characters")
-
-    # Only uppercase if necessary
-    species_final = if all(c -> c ∈ 'A':'Z', species_str)
-        species_str
-    elseif all(c -> c ∈ 'a':'z', species_str)
-        SubString(uppercase(species_str))
-    elseif all(c -> c ∈ 'A':'Z' || c ∈ 'a':'z', species_str)
-        SubString(uppercase(species_str))
-    else
-        return MalformedIdentifier{Reactome}(id, "species code must contain only letters")
-    end
-
-    number = parsefor(Reactome, UInt32, number_str)
-    number isa UInt32 || return number
-    # Encode 3-letter species code into UInt32 (8 bits per char)
-    species_code = UInt32(codeunit(species_final, 1)) << 16 | UInt32(codeunit(species_final, 2)) << 8 | UInt32(codeunit(species_final, 3))
-    Reactome(species_code, number)
-end
-
-function purl(reactome::Reactome)
-    id = shortcode(reactome)
-    "https://reactome.org/PathwayBrowser/#/$(id)"
-end
-
-function shortcode(reactome::Reactome)
-    # Decode species from UInt32
-    c1 = Char((reactome.species >> 16) & 0xff)
-    c2 = Char((reactome.species >> 8) & 0xff)
-    c3 = Char(reactome.species & 0xff)
-    "R-$(c1)$(c2)$(c3)-$(reactome.number)"
-end
-idcode(reactome::Reactome) = reactome.number
-
-Base.show(io::IO, reactome::Reactome) = (show(io, Reactome); show(io, (reactome.species, reactome.number)))
-
-
-# RefSeq
-
-"""
-    RefSeq <: BioIdentifier
-
-RefSeq curated reference sequence identifier.
-
-The Reference Sequence database is a comprehensive, integrated, non-redundant,
-well-annotated set of reference sequences including genomic, transcript, and
-protein sequences. Identifiers follow formats like `NM_<number>.<version>`,
-`NP_<number>.<version>`, etc. Parsing may throw a `MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(RefSeq, "NM_000546.6")
-RefSeq:NM_000546.6
-
-julia> parse(RefSeq, "NP_000537.3")
-RefSeq:NP_000537.3
-```
-"""
-struct RefSeq <: BioIdentifier
-    width::UInt8
-    prefix::UInt8
-    version::UInt16
-    number::UInt32
-end
-
-const REFSEQ_PREFIXES = ("nm", "np", "xm", "xp", "nr", "xr", "ng", "nt", "nw", "nc")
-
-function parseid(::Type{RefSeq}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/nuccore/", "ncbi.nlm.nih.gov/nuccore/")
-    parts = split(id, '.')
-    length(parts) == 2 || return MalformedIdentifier{RefSeq}(id, "must include version number after dot")
-    main_part, version_str = parts
-    version = parsefor(RefSeq, UInt16, version_str)
-    version isa UInt16 || return version
-    underscore_pos = findfirst('_', main_part)
-    isnothing(underscore_pos) && return MalformedIdentifier{RefSeq}(id, "must contain underscore separator")
-    prefix_str = main_part[1:underscore_pos-1]
-    digits = main_part[underscore_pos+1:end]
-    length(prefix_str) >= 2 && all(isletter, prefix_str) || return MalformedIdentifier{RefSeq}(id, "prefix must be letters followed by underscore")
-    w = ncodeunits(digits)
-    num = parsefor(RefSeq, UInt32, digits)
-    num isa UInt32 || return num
-    prefix_match = findfirst(==(prefix_str), REFSEQ_PREFIXES)
-    if isnothing(prefix_match)
-        return MalformedIdentifier{RefSeq}(id, "unsupported RefSeq prefix: $(prefix_str)")
-    end
-    # Accept only 6/8/9; infer correct width for irregular input
-    if w ∉ (6, 8, 9)
-        w = if num < 1_000_000; 6
-            elseif num < 100_000_000; 8
-            else 9 end
-    end
-    RefSeq(UInt8(w), UInt8(prefix_match), version, num)
-end
-
-purlprefix(::Type{RefSeq}) = "https://www.ncbi.nlm.nih.gov/nuccore/"
-shortcode(refseq::RefSeq) = string(uppercase(REFSEQ_PREFIXES[refseq.prefix]), '_', lpad(refseq.number, refseq.width, '0'), '.', refseq.version)
-idcode(refseq::RefSeq) = refseq.number
-
-Base.show(io::IO, refseq::RefSeq) = (show(io, RefSeq); show(io, (uppercase(REFSEQ_PREFIXES[refseq.prefix]), refseq.number, refseq.width, refseq.version)))
-
-
-# RRID
-
-"""
-    RRID <: BioIdentifier
-
-Research Resource Identifier.
-
-Research Resource Identifiers are persistent unique identifiers for research
-resources. RRIDs are designed to be used in the methods sections of research
-articles to unambiguously identify the research resources used. Identifiers
-follow format `RRID:<provider>:<id>`. Parsing may throw a `MalformedIdentifier`
-if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(RRID, "RRID:IMSR_JAX:000664")
-RRID:RRID:IMSR_JAX:000664
-
-julia> parse(RRID, "https://scicrunch.org/resolver/RRID:AB_123456")
-RRID:RRID:AB_123456
-```
-"""
-struct RRID <: BioIdentifier
-    provider::String
-    resource_id::String
-end
-
-function parseid(::Type{RRID}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "scicrunch.org/resolver/", "identifiers.org/rrid/")
-
-    has_rrid, id = chopprefixes(id, "rrid:")
-
-    colon_pos = findfirst(':', id)
-    colon_pos === nothing && return MalformedIdentifier{RRID}(id, "must contain provider and resource separated by colon")
-
-    provider = @view id[1:colon_pos-1]
-    resource_id = @view id[colon_pos+1:end]
-
-    isempty(provider) && return MalformedIdentifier{RRID}(id, "provider cannot be empty")
-    isempty(resource_id) && return MalformedIdentifier{RRID}(id, "resource ID cannot be empty")
-
-    all(c -> isalnum(c) || c == '_', provider) || return MalformedIdentifier{RRID}(id, "provider must contain only letters, numbers, and underscore")
-    all(c -> isalnum(c) || c == '_', resource_id) || return MalformedIdentifier{RRID}(id, "resource ID must contain only letters, numbers, and underscore")
-
-    RRID(string(provider), string(resource_id))
-end
-
-function purl(rrid::RRID)
-    id = shortcode(rrid)
-    "https://scicrunch.org/resolver/$(id)"
-end
-
-shortcode(rrid::RRID) = "RRID:$(rrid.provider):$(rrid.resource_id)"
-
-Base.show(io::IO, rrid::RRID) = (show(io, RRID); show(io, (rrid.provider, rrid.resource_id)))
-
-
-# SRA
-
-"""
-    SRA <: BioIdentifier
-
-Sequence Read Archive identifier.
-
-The Sequence Read Archive is a bioinformatics database that provides a public
-repository for DNA sequencing data, especially the read data generated by
-next-generation sequencing technologies. Identifiers follow formats SRR/SRX/SRS/SRP<number>
-for run/experiment/sample/study records respectively. Parsing may throw a
-`MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(SRA, "SRR123456")
-SRA:SRR123456
-
-julia> parse(SRA, "SRX789012")
-SRA:SRX789012
-```
-"""
-struct SRA <: BioIdentifier
-    type::UInt8
-    number::UInt64
-end
-
-const SRA_PREFIXES = ("srr", "srx", "srs", "srp")
-
-function parseid(::Type{SRA}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/sra/", "ncbi.nlm.nih.gov/sra/")
-    for (i, prefix) in enumerate(SRA_PREFIXES)
-        found, remainder = chopprefixes(id, prefix)
-        if found
-            number = parsefor(SRA, UInt64, remainder)
-            number isa UInt64 || return number
-            return SRA(UInt8(i), number)
-        end
-    end
-    return MalformedIdentifier{SRA}(id, "must start with SRR, SRX, SRS, or SRP")
-end
-
-purlprefix(::Type{SRA}) = "https://www.ncbi.nlm.nih.gov/sra/"
-shortcode(sra::SRA) = string(uppercase(SRA_PREFIXES[sra.type]), lpad(sra.number, max(6, ndigits(sra.number)), '0'))
-idcode(sra::SRA) = sra.number
-
-Base.show(io::IO, sra::SRA) = (show(io, SRA); show(io, (uppercase(SRA_PREFIXES[sra.type]), sra.number)))
-
-
-# SO
-
-"""
-    SO <: BioIdentifier
-
-Sequence Ontology identifier.
-
-The Sequence Ontology is a structured controlled vocabulary for the parts of
-a biological sequence. SO terms are used extensively in variant annotation
-tools like VEP and SnpEff to describe sequence features and variant effects.
-Parsing may throw a `MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(SO, "SO:0001234")
-SO:SO:0001234
-
-julia> parse(SO, "0000704")
-SO:SO:0000704
-```
-"""
-struct SO <: BioIdentifier
-    id::UInt32
-end
-
-@numericid SO url = "purl.obolibrary.org/obo/SO_" prefix = "SO:" digits = 7 inttype = UInt32
-
-function parseid(::Type{SO}, id::SubString)
-    _, id = chopprefixes(id, "purl.obolibrary.org/obo/SO_", "SO:")
-    length(id) == 7 && all(isdigit, id) || return MalformedIdentifier{SO}(id, "must be 7 digits (optionally prefixed with SO:)")
-    num = parsefor(SO, UInt32, id)
-    num isa UInt32 || return num
-    SO(num)
-end
-
-function purl(so::SO)
-    digits = lpad(so.id, 7, '0')
-    "https://purl.obolibrary.org/obo/SO_$(digits)"
-end
-
-
-
-# UniProt
-
-"""
-    UniProt <: BioIdentifier
-
-UniProt canonical protein sequence identifier.
-
-UniProt is a comprehensive, high-quality and freely accessible resource of
-protein sequence and functional information. Identifiers are either 6-character
-(Swiss-Prot) or 10-character (TrEMBL) alphanumeric codes following specific
-patterns. Parsing may throw a `MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(UniProt, "P04637")
-UniProt:P04637
-
-julia> parse(UniProt, "https://www.uniprot.org/uniprot/Q9Y6K5")
-UniProt:Q9Y6K5
-```
-"""
-struct UniProt <: BioIdentifier
-    id::SubString{String}
-end
-
-function parseid(::Type{UniProt}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.uniprot.org/uniprot/", "uniprot.org/uniprot/", "uniprot:")
-    if length(id) == 6
-        (id[1] in "OPQ") && isdigit(id[2]) && all(c -> isdigit(c) || (isuppercase(c) && isletter(c)), id[3:5]) && isdigit(id[6]) || return MalformedIdentifier{UniProt}(id, "6-character format must match [OPQ][0-9][A-Z0-9]{3}[0-9]")
-    elseif length(id) == 10
-        c1 = id[1]
-        (c1 ∈ 'A':'N' || c1 ∈ 'R':'Z' || c1 ∈ 'a':'n' || c1 ∈ 'r':'z') || return MalformedIdentifier{UniProt}(id, "first character must be A-N or R-Z")
-        isdigit(id[2]) || return MalformedIdentifier{UniProt}(id, "second character must be a digit")
-        for i in 3:10
-            c = id[i]
-            (isdigit(c) || c ∈ 'A':'Z' || c ∈ 'a':'z') || return MalformedIdentifier{UniProt}(id, "characters 3-10 must be letters or digits")
-        end
-    else
-        return MalformedIdentifier{UniProt}(id, "must be 6 or 10 alphanumeric characters")
-    end
-    UniProt(id)
-end
-
-purlprefix(::Type{UniProt}) = "https://www.uniprot.org/uniprot/"
-shortcode(up::UniProt) = String(up.id)
-
-Base.show(io::IO, up::UniProt) = (show(io, UniProt); show(io, (up.id,)))
-
-
-
-# UniRef
-
-"""
-    UniRef <: BioIdentifier
-
-UniProt Reference Clusters identifier.
-
-UniRef provides clustered sets of sequences from the UniProt Knowledgebase
-at 50%, 90%, and 100% sequence identity. These clusters are widely used
-by AlphaFold, MMseqs2, and other bioinformatics tools to reduce redundancy.
-Identifiers follow format UniRef<level>_<UniProt> where level is 50, 90, or 100.
-Parsing may throw a `MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(UniRef, "UniRef50_Q9Y6K5")
-UniRef:UniRef50_Q9Y6K5
-
-julia> parse(UniRef, "UniRef90_P69905")
-UniRef:UniRef90_P69905
-```
-"""
-struct UniRef <: BioIdentifier
-    level::UInt8  # 50, 90, or 100
-    uniprot::SubString{String}
-end
-
-function parseid(::Type{UniRef}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "www.uniprot.org/uniref/", "uniprot.org/uniref/")
-    startswith(id, "UniRef") || return MalformedIdentifier{UniRef}(id, "must start with 'UniRef'")
-    remainder = id[7:end]  # Skip "UniRef"
-    parts = split(remainder, '_', limit=2)
-    length(parts) == 2 || return MalformedIdentifier{UniRef}(id, "must follow format UniRef<level>_<UniProt>")
-    level_str, uniprot_str = parts[1], parts[2]
-
-    # Validate clustering level
-    level_str ∈ ("50", "90", "100") || return MalformedIdentifier{UniRef}(id, "clustering level must be 50, 90, or 100")
-    level = parse(UInt8, level_str)
-
-    # Validate UniProt ID format (basic check)
-    isempty(uniprot_str) && return MalformedIdentifier{UniRef}(id, "UniProt ID cannot be empty")
-    (length(uniprot_str) == 6 || length(uniprot_str) == 10) || return MalformedIdentifier{UniRef}(id, "UniProt ID must be 6 or 10 characters")
-    all(c -> isdigit(c) || (isuppercase(c) && isletter(c)), uniprot_str) || return MalformedIdentifier{UniRef}(id, "UniProt ID must contain only uppercase alphanumeric characters")
-
-    UniRef(level, SubString(uniprot_str))
-end
-
-purlprefix(::Type{UniRef}) = "https://www.uniprot.org/uniref/"
-shortcode(uniref::UniRef) = "UniRef$(uniref.level)_$(uniref.uniprot)"
-idcode(uniref::UniRef) = uniref.uniprot
-
-Base.show(io::IO, uniref::UniRef) = (show(io, UniRef); show(io, (uniref.level, uniref.uniprot)))
-
-
-# WikiPathways
-
-"""
-    WikiPathways <: BioIdentifier
-
-WikiPathways community pathway database identifier.
-
-WikiPathways is a community-curated pathway database providing biological
-pathway information. Identifiers follow format WP<digits> and are commonly
-used in pathway enrichment analysis tools like Cytoscape and GSEA.
-Parsing may throw a `MalformedIdentifier` if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(WikiPathways, "WP554")
-WikiPathways:WP554
-
-julia> parse(WikiPathways, "WP1234")
-WikiPathways:WP1234
-```
-"""
-struct WikiPathways <: BioIdentifier
-    id::UInt32
-end
-
-@numericid WikiPathways url = "www.wikipathways.org/instance/" prefix = "WP" inttype = UInt32
-
-
-
-
-
-# AFDP
-
-"""
-    AFDB <: BioIdentifier
-
-AlphaFold Database identifier for predicted 3-D protein models.
-
-AlphaFold DB identifiers reference AI-predicted protein structures from DeepMind/EMBL-EBI.
-They follow the format `AF-<UniProt>-F<number>` where UniProt is a valid UniProt accession
-and the F-number represents the fragment/model number. Parsing may throw a `MalformedIdentifier`
-if the format is invalid.
-
-# Examples
-
-```julia
-julia> parse(AFDB, "AF-P69905-F1")
-AFDB:AF-P69905-F1
-
-julia> parse(AFDB, "https://alphafold.com/entry/AF-Q9Y6K5-F1")
-AFDB:AF-Q9Y6K5-F1
-```
-"""
-struct AFDB <: BioIdentifier
-    uniprot::UniProt
-    fragment::UInt8
-end
-
-function parseid(::Type{AFDB}, id::SubString)
-    _, id = chopprefixes(id, "https://", "http://", "alphafold.com/entry/", "alphafold.ebi.ac.uk/entry/")
-    startswith(id, "AF-") || return MalformedIdentifier{AFDB}(id, "must start with 'AF-'")
-    parts = split(id[4:end], '-')
-    length(parts) == 2 && startswith(parts[2], 'F') || return MalformedIdentifier{AFDB}(id, "must follow format AF-<UniProt>-F<number>")
-    uniprot_part = parts[1]
-    fragment_str = parts[2][2:end]
-    # Validate using actual UniProt parser instead of loose checks
-    uniprot_result = parseid(UniProt, SubString(uniprot_part))
-    uniprot_result isa UniProt || return MalformedIdentifier{AFDB}(id, "invalid UniProt ID: $(uniprot_part)")
-    fragment = parsefor(AFDB, UInt8, fragment_str)  # Use UInt8 for fragment numbers ≤ 255
-    fragment isa UInt8 || return fragment
-    AFDB(uniprot_result, fragment)
-end
-
-purlprefix(::Type{AFDB}) = "https://alphafold.com/entry/"
-shortcode(afdb::AFDB) = "AF-$(shortcode(afdb.uniprot))-F$(afdb.fragment)"
-idcode(afdb::AFDB) = afdb.fragment
-
-Base.show(io::IO, afdb::AFDB) = (show(io, AFDB); show(io, (shortcode(afdb.uniprot), afdb.fragment)))
+@defid(WormBase <: BioIdentifier,
+       ("WBGene", :id(digits(8, pad=8))),
+       prefix="", purlprefix="https://wormbase.org/species/c_elegans/gene/")
 
 end
