@@ -1,6 +1,6 @@
 name = "BioIdentifiers"
 uuid = "22183900-f399-4fcd-a053-d40765e38b1f"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["TEC <git@tecosaur.net>"]
 
 [deps]
