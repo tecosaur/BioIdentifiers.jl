@@ -41,6 +41,8 @@ end
     check_formats(AFDB, [
         ("AF-P12345-F1",  "AF-P12345-F1",  "AF-P12345-F1",  "https://alphafold.com/entry/AF-P12345-F1"),
         ("AF-Q9UHC1-F255","AF-Q9UHC1-F255","AF-Q9UHC1-F255","https://alphafold.com/entry/AF-Q9UHC1-F255"),
+        ("AFP12345F1",    "AF-P12345-F1",  "AF-P12345-F1",  "https://alphafold.com/entry/AF-P12345-F1"),
+        ("af-p12345-f1",  "AF-P12345-F1",  "AF-P12345-F1",  "https://alphafold.com/entry/AF-P12345-F1"),
     ])
     check_malformed(AFDB, ["", "AF-", "P12345"])
 end
@@ -68,6 +70,8 @@ end
         ("PRJNA123456", "PRJNA123456", "PRJNA123456", "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA123456"),
         ("PRJEB123456", "PRJEB123456", "PRJEB123456", "https://www.ncbi.nlm.nih.gov/bioproject/PRJEB123456"),
         ("PRJDB123456", "PRJDB123456", "PRJDB123456", "https://www.ncbi.nlm.nih.gov/bioproject/PRJDB123456"),
+        ("prjna123456", "PRJNA123456", "PRJNA123456", "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA123456"),
+        ("PRJNA1",      "PRJNA1",      "PRJNA1",      "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1"),
     ])
     check_malformed(BioProject, ["", "PRJ123"])
 end
@@ -103,6 +107,8 @@ end
         ("CHEBI:15377", "15377", "CHEBI:15377", "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:15377"),
         ("CHEBI:1",     "1",     "CHEBI:1",     "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:1"),
         ("15377",       "15377", "CHEBI:15377", "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:15377"),
+        ("CHEBI_15377", "15377", "CHEBI:15377", "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:15377"),
+        ("chebi15377",  "15377", "CHEBI:15377", "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:15377"),
     ])
     check_malformed(ChEBI, [""])
 end
@@ -111,8 +117,10 @@ end
     check_formats(ChEMBL, [
         ("CHEMBL25",      "CHEMBL25",      "CHEMBL25",      "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL25"),
         ("CHEMBL1075272", "CHEMBL1075272", "CHEMBL1075272", "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL1075272"),
+        ("chembl25",      "CHEMBL25",      "CHEMBL25",      "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL25"),
+        ("25",            "CHEMBL25",      "CHEMBL25",      "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL25"),
     ])
-    check_malformed(ChEMBL, [""])
+    check_malformed(ChEMBL, ["", "CHEMBL", "CHEMBLx"])
 end
 
 @testset "CL" begin
@@ -120,16 +128,22 @@ end
         ("CL:0000001", "0000001", "CL:0000001", "https://purl.obolibrary.org/obo/CL_0000001"),
         ("CL:9999999", "9999999", "CL:9999999", "https://purl.obolibrary.org/obo/CL_9999999"),
         ("0000001",    "0000001", "CL:0000001", "https://purl.obolibrary.org/obo/CL_0000001"),
+        ("CL_0000001", "0000001", "CL:0000001", "https://purl.obolibrary.org/obo/CL_0000001"),
+        ("CL0000001",  "0000001", "CL:0000001", "https://purl.obolibrary.org/obo/CL_0000001"),
+        ("CL:1",       "0000001", "CL:0000001", "https://purl.obolibrary.org/obo/CL_0000001"),
     ])
-    check_malformed(CL, ["CL:123"])
+    check_malformed(CL, ["", "CL:", "CL:abc", "CL:00000001"])
 end
 
 @testset "ClinicalTrials" begin
     check_formats(ClinicalTrials, [
         ("NCT01234567", "NCT01234567", "NCT01234567", "https://clinicaltrials.gov/ct2/show/NCT01234567"),
         ("NCT00000001", "NCT00000001", "NCT00000001", "https://clinicaltrials.gov/ct2/show/NCT00000001"),
+        ("NCT123",      "NCT00000123", "NCT00000123", "https://clinicaltrials.gov/ct2/show/NCT00000123"),
+        ("123",         "NCT00000123", "NCT00000123", "https://clinicaltrials.gov/ct2/show/NCT00000123"),
+        ("nct01234567", "NCT01234567", "NCT01234567", "https://clinicaltrials.gov/ct2/show/NCT01234567"),
     ])
-    check_malformed(ClinicalTrials, ["NCT123"])
+    check_malformed(ClinicalTrials, ["", "NCT", "NCT123456789"])
 end
 
 @testset "ClinVar" begin
@@ -181,7 +195,7 @@ end
         ("DOID:9999999", "9999999", "DOID:9999999", "https://purl.obolibrary.org/obo/DOID_9999999"),
         ("0001816",      "0001816", "DOID:0001816", "https://purl.obolibrary.org/obo/DOID_0001816"),
     ])
-    check_malformed(DOID, ["DOID:123"])
+    check_malformed(DOID, ["", "DOID:", "DOID:abc", "DOID:00000001"])
 end
 
 @testset "DrugBank" begin
@@ -212,8 +226,10 @@ end
     check_formats(EGA, [
         ("EGAD00001000001", "EGAD00001000001", "EGAD00001000001", "https://ega-archive.org/EGAD00001000001"),
         ("EGAS00001000002", "EGAS00001000002", "EGAS00001000002", "https://ega-archive.org/EGAS00001000002"),
+        ("EGAD1",           "EGAD00000000001", "EGAD00000000001", "https://ega-archive.org/EGAD00000000001"),
+        ("egad00001000001", "EGAD00001000001", "EGAD00001000001", "https://ega-archive.org/EGAD00001000001"),
     ])
-    check_malformed(EGA, ["EGA123"])
+    check_malformed(EGA, ["EGA123", "", "EGAD123456789012"])
 end
 
 @testset "Ensembl" begin
@@ -237,6 +253,7 @@ end
             @test parse(T, shortcode(id)) == id
         end
     end
+    @test shortcode(parse(ENSG, "ENSG1")) == "ENSG00000000001"
     check_malformed(ENSG, ["", "invalid", "ENST00000269305"])
 end
 
@@ -264,7 +281,7 @@ end
         ("GO:0000001", "0000001", "GO:0000001", "https://purl.obolibrary.org/obo/GO_0000001"),
         ("0006915",    "0006915", "GO:0006915", "https://purl.obolibrary.org/obo/GO_0006915"),
     ])
-    check_malformed(GO, ["GO:123"])
+    check_malformed(GO, ["", "GO:", "GO:abc", "GO:00000001"])
 end
 
 @testset "GWAS" begin
@@ -287,8 +304,11 @@ end
     check_formats(HMDB, [
         ("HMDB0000001", "HMDB0000001", "HMDB0000001", "https://hmdb.ca/metabolites/HMDB0000001"),
         ("HMDB1234567", "HMDB1234567", "HMDB1234567", "https://hmdb.ca/metabolites/HMDB1234567"),
+        ("HMDB1",       "HMDB0000001", "HMDB0000001", "https://hmdb.ca/metabolites/HMDB0000001"),
+        ("1",           "HMDB0000001", "HMDB0000001", "https://hmdb.ca/metabolites/HMDB0000001"),
+        ("hmdb0000001", "HMDB0000001", "HMDB0000001", "https://hmdb.ca/metabolites/HMDB0000001"),
     ])
-    check_malformed(HMDB, ["HMDB"])
+    check_malformed(HMDB, ["", "HMDB", "HMDB12345678", "HMDBxyz"])
 end
 
 @testset "HPO" begin
@@ -342,7 +362,7 @@ end
 @testset "MeSH" begin
     check_formats(MeSH, [
         ("D001249",    "D001249",    "D001249",    "https://meshb.nlm.nih.gov/record/ui?ui=D001249"),
-        ("C000657245", "C657245", "C657245", "https://meshb.nlm.nih.gov/record/ui?ui=C657245"),
+        ("C000657245", "C000657245", "C000657245", "https://meshb.nlm.nih.gov/record/ui?ui=C000657245"),
     ])
     check_malformed(MeSH, [""])
 end
@@ -401,7 +421,8 @@ end
     id = parse(OMIM, "613659.0001")
     @test shortcode(id) == "613659.0001"
     @test parse(OMIM, shortcode(id)) == id
-    check_malformed(OMIM, ["12345"])
+    @test shortcode(parse(OMIM, "613659.1")) == "613659.0001"
+    check_malformed(OMIM, ["", "12345", "1234567"])
 end
 
 @testset "PATO" begin
@@ -423,8 +444,11 @@ end
     check_formats(Pfam, [
         ("PF00069", "PF00069", "PF00069", "https://www.ebi.ac.uk/interpro/entry/pfam/PF00069"),
         ("PF00001", "PF00001", "PF00001", "https://www.ebi.ac.uk/interpro/entry/pfam/PF00001"),
+        ("PF69",    "PF00069", "PF00069", "https://www.ebi.ac.uk/interpro/entry/pfam/PF00069"),
+        ("69",      "PF00069", "PF00069", "https://www.ebi.ac.uk/interpro/entry/pfam/PF00069"),
+        ("pf00069", "PF00069", "PF00069", "https://www.ebi.ac.uk/interpro/entry/pfam/PF00069"),
     ])
-    check_malformed(Pfam, [""])
+    check_malformed(Pfam, ["", "PF", "PF123456"])
 end
 
 @testset "PubChem" begin
@@ -439,9 +463,9 @@ end
     check_formats(PXD, [
         ("PXD000001",  "PXD000001", "PXD000001", "https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD000001"),
         ("PXD123456",  "PXD123456", "PXD123456", "https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD123456"),
+        ("RPXD123456", "PXD123456", "PXD123456", "https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD123456"),
+        ("000001",     "PXD000001", "PXD000001", "https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD000001"),
     ])
-    # RPXD prefix normalises to PXD
-    @test shortcode(parse(PXD, "RPXD123456")) == "PXD123456"
 end
 
 @testset "Reactome" begin

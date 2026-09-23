@@ -162,7 +162,7 @@ ArrayExpress:E-GEOD-5678
 ```
 """
 @defid(ArrayExpress <: BioIdentifier,
-       ("E-", :platform(letters(4:5, upper=true)), "-", :id(digits(UInt32))),
+       ("E", skip(print="-"), :platform(letters(4:5, upper=true)), skip(print="-"), :id(digits(UInt32))),
        prefix="", purlprefix="https://www.ebi.ac.uk/biostudies/arrayexpress/studies/")
 
 # BioGRID
@@ -263,7 +263,7 @@ CA:789012
 ```
 """
 @defid(CA <: BioIdentifier,
-       ("CA", :id(digits(UInt32))),
+       (skip(print="CA"), :id(digits(UInt32))),
        prefix="", purlprefix="https://reg.clinicalgenome.org/allele/")
 
 # CL
@@ -290,7 +290,7 @@ CL:0000001
 ```
 """
 @defid(CL <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("CL:", "CL_", "CL")), :id(digits(1:7, pad=7))),
        prefix="CL:", purlprefix="https://purl.obolibrary.org/obo/CL_")
 
 # Cellosaurus
@@ -316,7 +316,7 @@ Cellosaurus:CVCL_1234567
 ```
 """
 @defid(Cellosaurus <: BioIdentifier,
-       ("CVCL_", :id(digits(1:7))),
+       (skip(print="CVCL_"), :id(digits(1:7))),
        prefix="", purlprefix="https://www.cellosaurus.org/")
 
 # ChEBI
@@ -343,7 +343,7 @@ ChEBI:15377
 ```
 """
 @defid(ChEBI <: BioIdentifier,
-       :id(digits(UInt32)),
+       (skip(choice("CHEBI:", "CHEBI_", "CHEBI")), :id(digits(UInt32))),
        prefix="CHEBI:", purlprefix="https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:")
 
 # ChEMBL
@@ -369,7 +369,7 @@ ChEMBL:1075272
 ```
 """
 @defid(ChEMBL <: BioIdentifier,
-       ("CHEMBL", :id(digits(UInt32))),
+       (skip(print="CHEMBL"), :id(digits(UInt32))),
        prefix="", purlprefix="https://www.ebi.ac.uk/chembl/compound_report_card/")
 
 # ClinVar
@@ -425,7 +425,7 @@ ClinicalTrials:NCT01234567
 ```
 """
 @defid(ClinicalTrials <: BioIdentifier,
-       ("NCT", :id(digits(8, pad=8))),
+       (skip(print="NCT"), :id(digits(1:8, pad=8))),
        prefix="", purlprefix="https://clinicaltrials.gov/ct2/show/")
 
 # dbGaP
@@ -451,7 +451,7 @@ dbGaP:phs123456.v2.p3
 ```
 """
 @defid(dbGaP <: BioIdentifier,
-       ("phs", :study(digits(6, pad=6)), ".v", :ver(digits(1:2)),
+       ("phs", :study(digits(1:6, pad=6)), ".v", :ver(digits(1:2)),
         ".p", :participant(digits(1:2))),
        prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/gap/")
 
@@ -477,7 +477,7 @@ dbSNP:rs789012
 ```
 """
 @defid(dbSNP <: BioIdentifier,
-       ("rs", :id(digits(UInt32))),
+       (skip(print="rs"), :id(digits(UInt32))),
        prefix="", purlprefix="https://www.ncbi.nlm.nih.gov/snp/")
 
 # dbVar
@@ -530,7 +530,7 @@ DOID:0001816
 ```
 """
 @defid(DOID <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("DOID:", "DOID_", "DOID")), :id(digits(1:7, pad=7))),
        prefix="DOID:", purlprefix="https://purl.obolibrary.org/obo/DOID_")
 
 # ECO
@@ -556,7 +556,7 @@ ECO:0000269
 ```
 """
 @defid(ECO <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("ECO:", "ECO_", "ECO")), :id(digits(1:7, pad=7))),
        prefix="ECO:", purlprefix="https://purl.obolibrary.org/obo/ECO_")
 
 # EFO
@@ -583,7 +583,7 @@ EFO:0000001
 ```
 """
 @defid(EFO <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("EFO:", "EFO_", "EFO")), :id(digits(1:7, pad=7))),
        prefix="EFO:", purlprefix="https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=EFO_")
 
 # EGA
@@ -610,7 +610,7 @@ EGA:EGAS00001000002
 ```
 """
 @defid(EGA <: BioIdentifier,
-       (:prefix(choice("EGAD", "EGAS")), :id(digits(11, pad=11))),
+       (:prefix(choice("EGAD", "EGAS")), :id(digits(1:11, pad=11))),
        prefix="", purlprefix="https://ega-archive.org/")
 
 # GEO
@@ -663,7 +663,7 @@ GO:0006915
 ```
 """
 @defid(GO <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("GO:", "GO_", "GO")), :id(digits(1:7, pad=7))),
        prefix="GO:", purlprefix="https://purl.obolibrary.org/obo/GO_")
 
 # HGNC
@@ -689,7 +689,7 @@ HGNC:5
 ```
 """
 @defid(HGNC <: BioIdentifier,
-       :id(digits(1:5)),
+       (skip(choice("HGNC:", "HGNC")), :id(digits(1:5))),
        prefix="HGNC:", purlprefix="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:")
 
 # HMDB
@@ -716,7 +716,7 @@ HMDB:0123456
 ```
 """
 @defid(HMDB <: BioIdentifier,
-       ("HMDB", :id(digits(7, pad=7))),
+       (skip(print="HMDB"), :id(digits(1:7, pad=7))),
        prefix="", purlprefix="https://hmdb.ca/metabolites/")
 
 # HPO
@@ -744,7 +744,7 @@ HPO:0000001
 ```
 """
 @defid(HPO <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("HP:", "HP_", "HP")), :id(digits(1:7, pad=7))),
        prefix="HP:", purlprefix="https://purl.obolibrary.org/obo/HP_")
 
 # IntAct
@@ -770,7 +770,7 @@ IntAct:EBI-789012
 ```
 """
 @defid(IntAct <: BioIdentifier,
-       ("EBI-", :id(digits(UInt32))),
+       (skip(print="EBI-"), :id(digits(UInt32))),
        prefix="", purlprefix="https://www.ebi.ac.uk/intact/interaction/")
 
 # KEGG
@@ -796,7 +796,7 @@ KEGG:mmu04210
 ```
 """
 @defid(KEGG <: BioIdentifier,
-       (:species(letters(3:4, lower=true)), :id(digits(5, pad=5))),
+       (:species(letters(3:4, lower=true)), :id(digits(1:5, pad=5))),
        prefix="", purlprefix="https://www.kegg.jp/entry/")
 
 # MetaboLights
@@ -822,7 +822,7 @@ MetaboLights:MTBLS123
 ```
 """
 @defid(MetaboLights <: BioIdentifier,
-       ("MTBLS", :id(digits(UInt32))),
+       (skip(print="MTBLS"), :id(digits(UInt32))),
        prefix="", purlprefix="https://www.ebi.ac.uk/metabolights/")
 
 # MONDO
@@ -849,7 +849,7 @@ MONDO:0000001
 ```
 """
 @defid(MONDO <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("MONDO:", "MONDO_", "MONDO")), :id(digits(1:7, pad=7))),
        prefix="MONDO:", purlprefix="https://purl.obolibrary.org/obo/MONDO_")
 
 # NCBIGene
@@ -929,7 +929,7 @@ OMIM:613659.0001
 ```
 """
 @defid(OMIM <: BioIdentifier,
-       (:id(digits(6, pad=6)), optional(".", :suffix(digits(4, pad=4)))),
+       (:id(digits(6, pad=6)), optional(".", :suffix(digits(1:4, pad=4)))),
        prefix="", purlprefix="https://omim.org/entry/")
 
 # PDB
@@ -1022,7 +1022,7 @@ PXD:PXD123456
 ```
 """
 @defid(PXD <: BioIdentifier,
-       (skip(choice("PXD", "RPXD"), print="PXD"), :id(digits(6, pad=6))),
+       (skip(choice("PXD", "RPXD"), print="PXD"), :id(digits(1:6, pad=6))),
        prefix="", purlprefix="https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=")
 
 # Reactome
@@ -1049,7 +1049,7 @@ Reactome:R-MMU-123456
 ```
 """
 @defid(Reactome <: BioIdentifier,
-       ("R-", :species(letters(3, upper=true)), "-", :id(digits(UInt32))),
+       ("R", skip(print="-"), :species(letters(3, upper=true)), skip(print="-"), :id(digits(UInt32))),
        prefix="", purlprefix="https://reactome.org/PathwayBrowser/#/")
 
 # RefSeq
@@ -1132,7 +1132,7 @@ SO:0000704
 ```
 """
 @defid(SO <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("SO:", "SO_", "SO")), :id(digits(1:7, pad=7))),
        prefix="SO:", purlprefix="https://purl.obolibrary.org/obo/SO_")
 
 # SRA
@@ -1243,7 +1243,7 @@ AFDB:AF-Q9Y6K5-F1
 ```
 """
 @defid(AFDB <: BioIdentifier,
-       ("AF-", :uniprot(embed(UniProt)), "-F", :fragment(digits(1:3))),
+       ("AF", skip(print="-"), :uniprot(embed(UniProt)), skip(print="-"), "F", :fragment(digits(1:3))),
        prefix="", purlprefix="https://alphafold.com/entry/")
 
 # WikiPathways
@@ -1269,7 +1269,7 @@ julia> purl(parse(WikiPathways, "WP554"))
 ```
 """
 @defid(WikiPathways <: BioIdentifier,
-       ("WP", :id(digits(1:5))),
+       (skip(print="WP"), :id(digits(1:5))),
        prefix="", purlprefix="https://www.wikipathways.org/instance/")
 
 # ──────────────────────────────────────────────────────────────────
@@ -1287,7 +1287,7 @@ julia> purl(parse(WikiPathways, "WP554"))
            :Regulatory   => "ENSR",
            :Family       => "ENSF",
            :FamilyMember => "ENSFM"),
-        :number(digits(11, pad=11)),
+        :number(digits(1:11, pad=11)),
         optional(".", :version(digits(max=65535)))),
        purlprefix="https://www.ensembl.org/id/")
 
@@ -1496,7 +1496,7 @@ julia> purl(parse(DrugBank, "DB00945"))
 ```
 """
 @defid(DrugBank <: BioIdentifier,
-       ("DB", :id(digits(5, pad=5))),
+       (skip(print="DB"), :id(digits(1:5, pad=5))),
        prefix="", purlprefix="https://go.drugbank.com/drugs/")
 
 
@@ -1521,7 +1521,7 @@ julia> purl(parse(GWAS, "GCST90000001"))
 ```
 """
 @defid(GWAS <: BioIdentifier,
-       ("GCST", :id(digits(1:8))),
+       (skip(print="GCST"), :id(digits(1:8))),
        prefix="", purlprefix="https://www.ebi.ac.uk/gwas/studies/")
 
 
@@ -1548,7 +1548,7 @@ julia> purl(parse(MP, "MP:0000001"))
 ```
 """
 @defid(MP <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("MP:", "MP_", "MP")), :id(digits(1:7, pad=7))),
        prefix="MP:", purlprefix="https://purl.obolibrary.org/obo/MP_")
 
 
@@ -1574,7 +1574,7 @@ julia> purl(parse(PATO, "PATO:0000001"))
 ```
 """
 @defid(PATO <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("PATO:", "PATO_", "PATO")), :id(digits(1:7, pad=7))),
        prefix="PATO:", purlprefix="https://purl.obolibrary.org/obo/PATO_")
 
 
@@ -1601,7 +1601,7 @@ julia> purl(parse(UBERON, "UBERON:0000001"))
 ```
 """
 @defid(UBERON <: BioIdentifier,
-       :id(digits(7, pad=7)),
+       (skip(choice("UBERON:", "UBERON_", "UBERON")), :id(digits(1:7, pad=7))),
        prefix="UBERON:", purlprefix="https://purl.obolibrary.org/obo/UBERON_")
 
 
@@ -1623,11 +1623,11 @@ julia> parse(MeSH, "D001249")
 MeSH:D001249
 
 julia> parse(MeSH, "C000657245")
-MeSH:C657245
+MeSH:C000657245
 ```
 """
 @defid(MeSH <: BioIdentifier,
-       (choice("D", "C"), :id(digits(6:9, pad=6))),
+       (choice("D", "C"), :id(choice(digits(9:9, pad=9), digits(6:6, pad=6)))),
        prefix="", purlprefix="https://meshb.nlm.nih.gov/record/ui?ui=")
 
 
@@ -1654,7 +1654,7 @@ julia> purl(parse(InterPro, "IPR011009"))
 ```
 """
 @defid(InterPro <: BioIdentifier,
-       ("IPR", :id(digits(6, pad=6))),
+       (skip(print="IPR"), :id(digits(1:6, pad=6))),
        prefix="", purlprefix="https://www.ebi.ac.uk/interpro/entry/InterPro/")
 
 
@@ -1682,7 +1682,7 @@ julia> purl(parse(Pfam, "PF00069"))
 ```
 """
 @defid(Pfam <: BioIdentifier,
-       ("PF", :id(digits(5, pad=5))),
+       (skip(print="PF"), :id(digits(1:5, pad=5))),
        prefix="", purlprefix="https://www.ebi.ac.uk/interpro/entry/pfam/")
 
 
@@ -1708,7 +1708,7 @@ julia> purl(parse(MGI, "MGI:96417"))
 ```
 """
 @defid(MGI <: BioIdentifier,
-       :id(digits(1:7)),
+       (skip(choice("MGI:", "MGI")), :id(digits(1:7))),
        prefix="MGI:", purlprefix="https://www.informatics.jax.org/marker/MGI:")
 
 
@@ -1734,7 +1734,7 @@ SGD:S000002493
 ```
 """
 @defid(SGD <: BioIdentifier,
-       ("S", :id(digits(9, pad=9))),
+       (skip(print="S"), :id(digits(1:9, pad=9))),
        prefix="", purlprefix="https://www.yeastgenome.org/locus/")
 
 
@@ -1760,7 +1760,7 @@ julia> purl(parse(FlyBase, "FBgn0031701"))
 ```
 """
 @defid(FlyBase <: BioIdentifier,
-       ("FBgn", :id(digits(7, pad=7))),
+       (skip(print="FBgn"), :id(digits(1:7, pad=7))),
        prefix="", purlprefix="https://flybase.org/reports/")
 
 
@@ -1786,7 +1786,7 @@ julia> purl(parse(WormBase, "WBGene00006763"))
 ```
 """
 @defid(WormBase <: BioIdentifier,
-       ("WBGene", :id(digits(8, pad=8))),
+       (skip(print="WBGene"), :id(digits(1:8, pad=8))),
        prefix="", purlprefix="https://wormbase.org/species/c_elegans/gene/")
 
 end
