@@ -1789,4 +1789,18 @@ julia> purl(parse(WormBase, "WBGene00006763"))
        (skip(print="WBGene"), :id(digits(1:8, pad=8))),
        prefix="", purlprefix="https://wormbase.org/species/c_elegans/gene/")
 
+
+# Compile the hand-written identifiers' common entry points into the package image;
+# `@defid` types precompile theirs automatically.
+let io = IOBuffer()
+    for (T, example) in ((INSDC, "AB123456.1"), (ENSG, "ENSG00000141510"), (ENST, "ENST00000269305.9"),
+                         (ENSP, "ENSP00000269305"), (ENSE, "ENSE00001146308"), (ENSR, "ENSR00000000001"),
+                         (ENSF, "ENSF00000000001"), (ENSFM, "ENSFM00000000001"), (EnsemblIdentifier, "ENSG00000141510"))
+        id = parse(T, example)
+        tryparse(T, example); tryparse(T, "")
+        string(id); shortcode(id); purl(id)
+        print(io, id)
+    end
+end
+
 end
