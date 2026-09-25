@@ -32,6 +32,7 @@ end
 function check_malformed(T, inputs)
     for input in inputs
         @test tryparse(T, input) === nothing
+        @test_throws MalformedIdentifier parse(T, input)
     end
 end
 
@@ -329,7 +330,8 @@ end
     id2 = parse(INSDC, "U12345")
     @test shortcode(id2) == "U12345"
     @test parse(INSDC, shortcode(id2)) == id2
-    check_malformed(INSDC, ["", "invalid"])
+    check_malformed(INSDC, ["", "invalid", "ZZ123", "AY123456.", "AY123456.x",
+                            "AY123456.65536", "AY99999999999999999999999"])
 end
 
 @testset "IntAct" begin
