@@ -324,6 +324,7 @@ end
     id = parse(INSDC, "AB123456.1")
     @test shortcode(id) == "AB123456.1"
     @test string(id) == "INSDC:AB123456.1"
+    @test parse(INSDC, string(id)) == id
     @test purl(id) == "https://www.ncbi.nlm.nih.gov/nuccore/AB123456.1"
     @test parse(INSDC, shortcode(id)) == id
     # Without version

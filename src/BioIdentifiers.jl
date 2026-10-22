@@ -1417,36 +1417,27 @@ const INSDC_PREFIXES = [
 
 # Returns the error rather than throwing it, so a failed `tryparse` avoids a throw.
 function parseid(::Type{INSDC}, id::AbstractString)
-    id = SubString(string(id))
-    _, id = chopprefixes(id, "https://", "http://", "www.ncbi.nlm.nih.gov/nuccore/", "ncbi.nlm.nih.gov/nuccore/", "www.ebi.ac.uk/ena/browser/view/", "ebi.ac.uk/ena/browser/view/")
-    # Extract version if present
-    base_id, version = if contains(id, '.')
-        parts = split(id, '.', limit=2)
-        dotpos = findfirst('.', id)
-        version_str = parts[2]
-        isempty(version_str) && return MalformedIdentifier{INSDC}(id, dotpos + 1, "version cannot be empty after period")
-        parsed_version = tryparse(UInt16, version_str)
-        isnothing(parsed_version) && return MalformedIdentifier{INSDC}(id, dotpos + 1, "must contain only digits")
-        parts[1], parsed_version
-    else
+    _, id = chopprefixes(id, "insdc:", "https://", "http://", "www.ncbi.nlm.nih.gov/nuccore/", "ncbi.nlm.nih.gov/nuccore/", "www.ebi.ac.uk/ena/browser/view/", "ebi.ac.uk/ena/browser/view/")
+    dot = findfirst(==(UInt8('.')), codeunits(id))
+    base, version = if isnothing(dot)
         id, nothing
+    else
+        dot == ncodeunits(id) && return MalformedIdentifier{INSDC}(id, dot + 1, "version cannot be empty after period")
+        v = tryparse(UInt16, SubString(id, dot + 1))
+        isnothing(v) && return MalformedIdentifier{INSDC}(id, dot + 1, "must contain only digits")
+        SubString(id, 1, dot - 1), v
     end
-    # Find matching prefix
-    prefix_match = nothing
-    for prefix in INSDC_PREFIXES
-        if startswith(base_id, prefix)
-            remainder = base_id[length(prefix)+1:end]
-            if all(isdigit, remainder) && !isempty(remainder)
-                prefix_match = prefix
-                break
-            end
-        end
-    end
-    prefix_match === nothing && return MalformedIdentifier{INSDC}(id, 1, "must start with valid INSDC prefix followed by digits")
-    remainder = base_id[length(prefix_match)+1:end]
-    num = tryparse(UInt64, remainder)
-    isnothing(num) && return MalformedIdentifier{INSDC}(id, length(prefix_match) + 1, "must contain only digits")
-    INSDC(SubString(prefix_match), num, version)
+    nletters = something(findfirst(∉(UInt8('A'):UInt8('Z')), codeunits(base)), ncodeunits(base) + 1) - 1
+    numeral = @view codeunits(base)[nletters+1:end]
+    valid = (nletters == 1 || nletters == 2 && codeunit(base, 1) <= UInt8('B')) &&
+        !isempty(numeral) && all(∈(UInt8('0'):UInt8('9')), numeral)
+    valid || return MalformedIdentifier{INSDC}(id, 1, "must start with valid INSDC prefix followed by digits")
+    num = tryparse(UInt64, SubString(base, nletters + 1))
+    isnothing(num) && return MalformedIdentifier{INSDC}(id, nletters + 1, "must contain only digits")
+    # INSDC_PREFIXES lists A-Z, then AA-AZ, then BA-BZ
+    letter(i) = Int(codeunit(base, i) - UInt8('A'))
+    prefix = INSDC_PREFIXES[if nletters == 1; letter(1) + 1 else 27 + 26letter(1) + letter(2) end]
+    INSDC(SubString(prefix), num, version)
 end
 
 function Base.parse(::Type{INSDC}, id::AbstractString)
